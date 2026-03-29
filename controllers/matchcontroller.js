@@ -1427,7 +1427,7 @@ router.get("/update_to_live/:matchId", async (req, res) => {
                                 const team1Players = players1.map(p => ({
                                     playerId: p.id,
                                     playerName: p.name,
-                                    image: `https://static.cricbuzz.com/a/img/v1/152x152/i1/c${p.faceimageid}/i.jpg`,
+                                    image: `https://static.cricbuzz.com/a/img/v1/152x152/i1/c${p.faceImageId}/i.jpg`,
                                     points: 4,
                                     position: p.role === "Unknown" ? "Batsman" : p.role,
                                     batOrder: -1
@@ -1436,7 +1436,7 @@ router.get("/update_to_live/:matchId", async (req, res) => {
                                 const team2Players = players2.map(p => ({
                                     playerId: p.id,
                                     playerName: p.name,
-                                    image: `https://static.cricbuzz.com/a/img/v1/152x152/i1/c${p.faceimageid}/i.jpg`
+                                    image: `https://static.cricbuzz.com/a/img/v1/152x152/i1/c${p.faceImageId}/i.jpg`,
                                     points: 4,
                                     position: p.role === "Unknown" ? "Batsman" : p.role,
                                     batOrder: -1
