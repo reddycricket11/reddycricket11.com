@@ -109,7 +109,7 @@ mongoose.connect(
 // addLiveDetails();
 // addLivePlayers();
 // addLivescoresDetails();
-// addMatchIds();
+ addMatchIds();
 // addTeamstandingstodb();
 // addteamPlayers();
 // addTeamstandingstodbAPI();
