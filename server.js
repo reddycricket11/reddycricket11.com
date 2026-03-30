@@ -102,18 +102,18 @@ mongoose.connect(
   }
 );
 
- cronjobs()
+// cronjobs()
  createDefaultContestTypes()
 // updateBalls();
- addMatchtoDb();
+// addMatchtoDb();
 // addLiveDetails();
 // addLivePlayers();
 // addLivescoresDetails();
- addMatchIds();
+// addMatchIds();
 // addTeamstandingstodb();
 // addteamPlayers();
 // addTeamstandingstodbAPI();
- addPlayersAPI();
+// addPlayersAPI();
 // startTransaction();
 // addLivecommentary();
 // addLivecommentaryCustom('odi')
@@ -123,7 +123,7 @@ mongoose.connect(
 //addInPlayStatus();
 // startCryptoTransaction();
 // updateSeries()
- updateSquads()
+// updateSquads()
 // generateShotTypes()
 // fetchAndSaveTeams();
 // addMatchesForAllCurrentSeries()
