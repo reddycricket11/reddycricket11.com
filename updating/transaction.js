@@ -13,67 +13,95 @@ const Transaction = require("../models/transaction");
 
 //     }
 // }
+
+function compare(a, b) {
+  return b.points - a.points; // ✅ FIXED
+}
+
 module.exports.startTransaction = async function () {
   let date = new Date();
   const endDate = new Date(date.getTime() + 24 * 60 * 60 * 1000 * 2);
   date = new Date(date.getTime() - 24 * 60 * 60 * 1000 * 2);
+
   const matches = await MatchLive.find({
     date: {
       $gte: new Date(date),
       $lt: new Date(endDate),
     },
   });
+
   for (let i = 0; i < matches.length; i++) {
     if (matches[i].result == "Complete" && !matches[i].transaction) {
+
       const contests = await Contest.find({ matchId: matches[i].matchId });
+
       for (let k = 0; k < contests.length; k++) {
+
         let teams = [];
+
         contests[k].teamsId = contests[k].teamsId.filter((t) => t);
+
         if (contests[k]?.teamsId?.length) {
+
           for (let j = 0; j < contests[k].teamsId.length; j++) {
+
             if (mongoose.Types.ObjectId.isValid(contests[k].teamsId[j])) {
+
               const team = await Team.findById(contests[k].teamsId[j]);
-              teams.push(team);
+
+              if (team) teams.push(team); // ✅ null safe
             }
           }
-          function compare(a, b) {
-            if (a.points < b.points) {
-              return -1;
-            }
-            if (a.points > b.points) {
-              return 1;
-            }
-            return 0;
-          }
+
+          // ✅ sorting correct
+          teams = teams.sort(compare);
         }
-        teams = teams.sort(compare);
-        for (let j = 0; j < contests[k].prizeDetails.length; j++) {
+
+        // ✅ prizeDetails replace with prizes (IMPORTANT)
+        for (let j = 0; j < contests[k].prizes.length; j++) {
+
+          const prizeAmount = contests[k].prizes[j].amount;
+
           if (teams.length > 0 && teams[j]?.userId) {
+
             const user = await User.findById(teams[j].userId);
-            //console.log(user, "user");
-            user.wallet += contests[k].prizeDetails[j].prize;
-            await Transaction.create({
-              userId: user?._id,
-              amount: contests[k].prizeDetails[j].prize,
-              action: "winnings",
-              status: "completed",
-              transactionId: contests[k]._id
-            });
-            user.totalAmountWon += contests[k].prizeDetails[j].prize;
+            if (!user) continue;
+
+            // ✅ सिर्फ winner को पैसा
+            if (prizeAmount > 0) {
+
+              user.wallet += prizeAmount;
+
+              await Transaction.create({
+                userId: user?._id,
+                amount: prizeAmount,
+                action: "winnings",
+                status: "completed",
+                transactionId: contests[k]._id
+              });
+
+              user.totalAmountWon += prizeAmount;
+            }
+
             try {
+
               await user.save();
+
               if (user?.fcmtoken) {
                 const message = {
                   notification: {
-                    title: "Congratulations!",
-                    body: `You won ₹${contests[k].prizeDetails[j].prize}! Check your wallet for details.`,
+                    title: "Match Result",
+                    body:
+                      prizeAmount > 0
+                        ? `You won ₹${prizeAmount}! Check your wallet for details.`
+                        : `Better luck next time`,
                   },
                   token: user.fcmtoken,
                 };
-                await messaging.send(message)
+
+                await messaging.send(message);
               }
-              //matches[i].transaction = true;
-              //await matches.save();
+
               const matchUpdate = await MatchLive.updateOne(
                 { matchId: matches[i]?.matchId },
                 {
@@ -82,6 +110,7 @@ module.exports.startTransaction = async function () {
                   },
                 }
               );
+
             } catch (e) {
               console.log(e);
             }
