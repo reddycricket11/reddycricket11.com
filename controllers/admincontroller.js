@@ -221,9 +221,9 @@ router.get("/users/:userId/matches", async (req, res) => {
             if (arr[x].userId == req.query.userid) {
             }
             try {
-              if (contests[i]?.prizeDetails[x]?.prize) {
-                totalwon = contests[i]?.prizeDetails[x]?.prize + totalwon;
-              }
+              if (contests[i]?.prizes[x]?.amount) {
+  totalwon = contests[i]?.prizes[x]?.amount + totalwon;
+}
             } catch (err) {
               console.log(err, "err");
             }
