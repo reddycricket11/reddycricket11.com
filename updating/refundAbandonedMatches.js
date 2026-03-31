@@ -8,7 +8,7 @@ module.exports.refundAbandonedMatches = async function () {
   const now = new Date();
 
   // ⏰ match start के 2 घंटे बाद
-  const cutoff = new Date(now.getTime() - 2 * 60 * 60 * 1000);
+  const cutoff = new Date(now.getTime() - 5 * 60 * 60 * 1000);
 
   // 🔍 ऐसे match जिनका time निकल गया
   const matches = await Match.find({ date: { $lt: cutoff } });
@@ -22,7 +22,14 @@ module.exports.refundAbandonedMatches = async function () {
       !live.teamHomePlayers?.length ||
       !live.teamAwayPlayers?.length;
 
-    if (!lineupMissing) continue;
+    // ✅ match cancelled / abandoned / no result
+    const isAbandoned =
+      match.status === "cancelled" ||
+      match.status === "abandoned" ||
+      match.status === "no result";
+
+    // 👉 अगर दोनों false हैं तो skip
+    if (!lineupMissing && !isAbandoned) continue;
 
     // 🔁 contest ढूंढो
     const contests = await Contest.find({
@@ -31,7 +38,11 @@ module.exports.refundAbandonedMatches = async function () {
     });
 
     for (const contest of contests) {
-      const entryFee = contest.price / contest.totalSpots;
+      // ✅ Safety: already refunded तो skip
+      if (contest.refunded) continue;
+
+      // ✅ सही entry fee (हर user का)
+      const entryFee = contest.price;
 
       for (const userId of contest.userIds) {
         const user = await User.findById(userId);
