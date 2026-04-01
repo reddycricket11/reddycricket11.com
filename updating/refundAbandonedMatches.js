@@ -42,7 +42,7 @@ module.exports.refundAbandonedMatches = async function () {
       if (contest.refunded) continue;
 
       // ✅ सही entry fee (हर user का)
-      const entryFee = contest.price;
+      const entryFee = contest.entryFee;
 
       for (const userId of contest.userIds) {
         const user = await User.findById(userId);
