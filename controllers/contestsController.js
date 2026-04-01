@@ -136,15 +136,15 @@ router.get("/joincontest/:id", async (req, res) => {
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
   if (date < match.date) {
-    if (user.wallet >= contest.entryFee) {
-      user.wallet -= (contest.entryFee);
+    if (user.wallet >= contest.price / contest.totalSpots) {
+      user.wallet -= (contest.price / contest.totalSpots);
       user.numberOfContestJoined = user.numberOfContestJoined + 1;
       contest.userIds.push(req.body.uidfromtoken);
       contest.teamsId.push(req.query.teamid);
       contest.spotsLeft -= 1;
       await Transaction.create({
         userId: req.body.uidfromtoken,
-        amount: contest.entryFee,
+        amount: contest.price / contest.totalSpots,
         action: "entry fee",
         status: "completed",
         transactionId: contest._id
@@ -208,7 +208,7 @@ router.post("/cruateContestType", async (req, res) => {
 
 router.post("/createContestType", async (req, res) => {
   try {
-    console.log("REQ BODY:", req.body);
+    console.log(req.body, 'req body')
     const contestType = new ContestType(req.body);
     await contestType.save();
 
@@ -224,7 +224,6 @@ router.post("/createContestType", async (req, res) => {
 
       // Create new contest for this match
       const contest = new Contest({
-        entryFee: contestType.entryFee,
         price: contestType.prize,
         totalSpots: contestType.totalSpots,
         spotsLeft: contestType.totalSpots,
