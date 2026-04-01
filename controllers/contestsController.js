@@ -99,21 +99,19 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
       let teamsarray = [];
       arr = arr.sort((a, b) => b?.points - a?.points);
       for (let x = 0; x < arr.length; x++) {
-  const user = await User.findById(arr[x].userId);
-
-  if (arr[x].userId == req.body.uidfromtoken) {
-
-    const prizeObj = contests[i].prizeDetails.find(p => p.rank === x + 1);
-
-    teamsarray.push({
-      ...arr[x]._doc,
-      rank: x + 1,
-      won: prizeObj ? prizeObj.prize : 0,
-      username: user.username,
-      teamnumber: x + 1,
-    });
-  }
-}
+        const user = await User.findById(arr[x].userId);
+        if (arr[x].userId == req.body.uidfromtoken) {
+          teamsarray.push({
+            ...arr[x]._doc,
+            rank: x + 1,
+            won: contests[i]?.prizeDetails[x]?.prize
+              ? contests[i]?.prizeDetails[x]?.prize
+              : 0,
+            username: user.username,
+            teamnumber: x + 1,
+          });
+        }
+      }
       console.log(teamsarray, "teamsarray");
       contestsArray.push({ contest: contests[i], teams: teamsarray });
     }
@@ -138,15 +136,15 @@ router.get("/joincontest/:id", async (req, res) => {
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
   if (date < match.date) {
-  if (user.wallet >= contest.price / contest.totalSpots) {
-      user.wallet -= (contest.price / contest.totalSpots); 
+    if (user.wallet >= contest.price / contest.totalSpots) {
+      user.wallet -= (contest.price / contest.totalSpots);
       user.numberOfContestJoined = user.numberOfContestJoined + 1;
       contest.userIds.push(req.body.uidfromtoken);
       contest.teamsId.push(req.query.teamid);
       contest.spotsLeft -= 1;
       await Transaction.create({
         userId: req.body.uidfromtoken,
-        amount: contest.entryFee, 
+        amount: contest.price / contest.totalSpots,
         action: "entry fee",
         status: "completed",
         transactionId: contest._id
@@ -156,15 +154,14 @@ router.get("/joincontest/:id", async (req, res) => {
       res.status(200).json({
         contest,
       });
-     
     } else {
       res.status(400).json({
         message: "can't join contest due to insufficient balance",
         success: false,
       });
     }
-  
- } else {
+  }
+  else {
     res.status(400).json({
       message: "can't join contest, time's up",
       success: false,
@@ -221,20 +218,19 @@ router.post("/createContestType", async (req, res) => {
     for (const match of upcomingMatches) {
       // Prepare prizeDetails
       const prizeDetails = contestType.prizes.map(prize => ({
-        rank: prize.rank,
         prize: prize.amount,
         prizeHolder: ""
       }));
 
       // Create new contest for this match
       const contest = new Contest({
-        price: contestType.prize,        // total prize pool
-        entryFee: contestType.entryFee,
+        price: contestType.prize,
         totalSpots: contestType.totalSpots,
         spotsLeft: contestType.totalSpots,
         matchId: match.matchId,
         prizeDetails,
         numWinners: contestType.numWinners,
+        entryFee: contestType.entryFee,
       });
 
       try {
