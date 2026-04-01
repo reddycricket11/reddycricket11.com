@@ -144,7 +144,7 @@ router.get("/joincontest/:id", async (req, res) => {
       contest.spotsLeft -= 1;
       await Transaction.create({
         userId: req.body.uidfromtoken,
-        amount: contest.price / contest.totalSpots,
+        amount: contest.entryFee,
         action: "entry fee",
         status: "completed",
         transactionId: contest._id
