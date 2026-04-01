@@ -153,14 +153,16 @@ module.exports.addMatchtoDb = async function () {
               }));
 
               const contest = await Contest.create({
-                price: contestTypes[k].prize,
-                totalSpots: contestTypes[k].totalSpots,
-                spotsLeft: contestTypes[k].totalSpots,
-                matchId: matchId,
-                prizeDetails,
-                numWinners: contestTypes[k].numWinners,
-                entryFee: contestTypes[k].entryFee,
-              });
+  entryFee: contestTypes[k].entryFee,
+  totalSpots: contestTypes[k].totalSpots,
+  spotsLeft: contestTypes[k].totalSpots,
+  matchId: matchId,
+  prizeDetails,
+  numWinners: contestTypes[k].numWinners,
+
+  // 🔥 FIX: price सही बनाओ
+  price: contestTypes[k].entryFee * contestTypes[k].totalSpots,
+});
 
               match1.contestId.push(contest._id);
             }
