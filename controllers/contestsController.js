@@ -140,7 +140,7 @@ router.get("/joincontest/:id", async (req, res) => {
   if (date < match.date) {
    if (user.wallet >= contest.entryFee) {
   user.wallet -= contest.entryFee;
-}
+
       user.numberOfContestJoined = user.numberOfContestJoined + 1;
       contest.userIds.push(req.body.uidfromtoken);
       contest.teamsId.push(req.query.teamid);
@@ -157,6 +157,7 @@ router.get("/joincontest/:id", async (req, res) => {
       res.status(200).json({
         contest,
       });
+     }
     } else {
       res.status(400).json({
         message: "can't join contest due to insufficient balance",
