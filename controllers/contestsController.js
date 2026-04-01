@@ -208,7 +208,7 @@ router.post("/cruateContestType", async (req, res) => {
 
 router.post("/createContestType", async (req, res) => {
   try {
-    console.log(req.body, 'req body')
+    console.log("REQ BODY:", req.body);
     const contestType = new ContestType(req.body);
     await contestType.save();
 
