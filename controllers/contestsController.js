@@ -99,19 +99,21 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
       let teamsarray = [];
       arr = arr.sort((a, b) => b?.points - a?.points);
       for (let x = 0; x < arr.length; x++) {
-        const user = await User.findById(arr[x].userId);
-        if (arr[x].userId == req.body.uidfromtoken) {
-          teamsarray.push({
-            ...arr[x]._doc,
-            rank: x + 1,
-            won: contests[i]?.prizeDetails[x]?.prize
-              ? contests[i]?.prizeDetails[x]?.prize
-              : 0,
-            username: user.username,
-            teamnumber: x + 1,
-          });
-        }
-      }
+  const user = await User.findById(arr[x].userId);
+
+  if (arr[x].userId == req.body.uidfromtoken) {
+
+    const prizeObj = contests[i].prizeDetails.find(p => p.rank === x + 1);
+
+    teamsarray.push({
+      ...arr[x]._doc,
+      rank: x + 1,
+      won: prizeObj ? prizeObj.prize : 0,
+      username: user.username,
+      teamnumber: x + 1,
+    });
+  }
+}
       console.log(teamsarray, "teamsarray");
       contestsArray.push({ contest: contests[i], teams: teamsarray });
     }
