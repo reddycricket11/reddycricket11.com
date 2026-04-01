@@ -104,7 +104,9 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
           teamsarray.push({
             ...arr[x]._doc,
             rank: x + 1,
-            won: contests[i]?.prizeDetails?.[x]?.prize || 0,
+            won: contests[i]?.prizeDetails[x]?.prize
+              ? contests[i]?.prizeDetails[x]?.prize
+              : 0,
             username: user.username,
             teamnumber: x + 1,
           });
@@ -133,25 +135,16 @@ router.get("/joincontest/:id", async (req, res) => {
   await user.save();
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
-    // ✅ ENTRY FEE FIX
-  const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
-
-  console.log("ENTRY FEE:", entryFee);
-
   if (date < match.date) {
-
-    // ✅ WALLET CHECK (MISSING था)
-    if (user.wallet >= entryFee) {
-
-      // ✅ WALLET CUT (MISSING था)
-      user.wallet -= entryFee;
+    if (user.wallet >= contest.price / contest.totalSpots) {
+      user.wallet -= (contest.price / contest.totalSpots);
       user.numberOfContestJoined = user.numberOfContestJoined + 1;
       contest.userIds.push(req.body.uidfromtoken);
       contest.teamsId.push(req.query.teamid);
       contest.spotsLeft -= 1;
       await Transaction.create({
         userId: req.body.uidfromtoken,
-         amount: entryFee,
+        amount: contest.price / contest.totalSpots,
         action: "entry fee",
         status: "completed",
         transactionId: contest._id
