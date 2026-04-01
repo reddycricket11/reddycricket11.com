@@ -135,16 +135,25 @@ router.get("/joincontest/:id", async (req, res) => {
   await user.save();
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
+    // ✅ ENTRY FEE FIX
+  const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
+
+  console.log("ENTRY FEE:", entryFee);
+
   if (date < match.date) {
-    if (user.wallet >= contest.price / contest.totalSpots) {
-      user.wallet -= (contest.price / contest.totalSpots);
+
+    // ✅ WALLET CHECK (MISSING था)
+    if (user.wallet >= entryFee) {
+
+      // ✅ WALLET CUT (MISSING था)
+      user.wallet -= entryFee;
       user.numberOfContestJoined = user.numberOfContestJoined + 1;
       contest.userIds.push(req.body.uidfromtoken);
       contest.teamsId.push(req.query.teamid);
       contest.spotsLeft -= 1;
       await Transaction.create({
         userId: req.body.uidfromtoken,
-        amount: contest.entryFee,
+         amount: entryFee,
         action: "entry fee",
         status: "completed",
         transactionId: contest._id
