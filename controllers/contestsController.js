@@ -104,9 +104,7 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
           teamsarray.push({
             ...arr[x]._doc,
             rank: x + 1,
-            won: contests[i]?.prizes[x]?.amount
-  ? contests[i]?.prizes[x]?.amount
-  : 0,
+            won: contests[i]?.prizeDetails?.[x]?.prize || 0,
             username: user.username,
             teamnumber: x + 1,
           });
