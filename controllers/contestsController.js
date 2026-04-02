@@ -217,10 +217,10 @@ router.post("/createContestType", async (req, res) => {
 
     for (const match of upcomingMatches) {
       // Prepare prizeDetails
-      const prizeDetails = contestType.prizeDetails.map(p => ({
-  prize: p.prize,
-  prizeHolder: ""
-}));
+      const prizeDetails = contestType.prizes.map(prize => ({
+        prize: prize.amount,
+        prizeHolder: ""
+      }));
 
       // Create new contest for this match
       const contest = new Contest({
