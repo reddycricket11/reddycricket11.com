@@ -19,6 +19,7 @@ function compare(a, b) {
 }
 
 module.exports.startTransaction = async function () {
+   console.log("🔥 RUNNING TRANSACTION:", new Date()); // ✅ 1
   let date = new Date();
   const endDate = new Date(date.getTime() + 24 * 60 * 60 * 1000 * 2);
   date = new Date(date.getTime() - 24 * 60 * 60 * 1000 * 2);
@@ -29,12 +30,16 @@ module.exports.startTransaction = async function () {
       $lt: new Date(endDate),
     },
   });
-
+ console.log("TOTAL MATCHES:", matches.length); // ✅ 2
   for (let i = 0; i < matches.length; i++) {
+    console.log("👉 MATCH ID:", matches[i].matchId); // ✅ 3
+    console.log("👉 RESULT:", matches[i].result); // ✅ 4
+    console.log("👉 TRANSACTION:", matches[i].transaction); // ✅ 5
     if (matches[i].result == "Complete" && !matches[i].transaction) {
+      console.log("✅ MATCH ELIGIBLE FOR TRANSACTION"); // ✅ 6
 
       const contests = await Contest.find({ matchId: matches[i].matchId });
-
+      console.log("🎯 CONTESTS FOUND:", contests.length); // ✅ 7
       for (let k = 0; k < contests.length; k++) {
 
         let teams = [];
@@ -56,21 +61,22 @@ module.exports.startTransaction = async function () {
           // ✅ sorting correct
           teams = teams.sort(compare);
         }
-
+          console.log("👥 TEAMS COUNT:", teams.length); // ✅ 8
         // ✅ SAFETY CHECK
         if (!teams.length) continue;
 
         // ✅ prize distribution
         for (let j = 0; j < contests[k].prizes.length; j++) {
-
+       console.log("🏆 PRIZE INDEX:", j); // ✅ 9
+          console.log("🏆 PRIZE AMOUNT:", contests[k].prizes[j].amount); // ✅ 10
           const prizeAmount = contests[k].prizes[j].amount;
 
           // ✅ index safety
           if (!teams[j] || !teams[j].userId) continue;
-
+         console.log("❌ TEAM OR USER NOT FOUND"); // ✅ 11
           const user = await User.findById(teams[j].userId);
           if (!user) continue;
-
+           console.log("👤 USER ID:", teams[j].userId); // ✅ 12
           try {
 
             // ✅ only winner gets money
@@ -90,7 +96,7 @@ module.exports.startTransaction = async function () {
             }
 
             await user.save();
-
+          console.log("✅ WALLET UPDATED:", user.wallet); // ✅ 15
             // ✅ notification
             if (user?.fcmtoken) {
               const message = {
@@ -123,6 +129,7 @@ module.exports.startTransaction = async function () {
             },
           }
         );
+        console.log("✅ MATCH MARKED AS TRANSACTION DONE"); // ✅ 16
       } catch (e) {
         console.log("MATCH UPDATE ERROR:", e);
       }
