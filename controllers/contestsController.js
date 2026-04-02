@@ -209,8 +209,7 @@ router.post("/cruateContestType", async (req, res) => {
 router.post("/createContestType", async (req, res) => {
   try {
     console.log(req.body, 'req body')
-    const contestType = new ContestType(req.body);
-    await contestType.save();
+   const contestType = await ContestType.create(req.body);
 
     // Get all upcoming matches
     const upcomingMatches = await Match.find({ date: { $gte: new Date() } });
@@ -224,7 +223,7 @@ router.post("/createContestType", async (req, res) => {
 
       // Create new contest for this match
       const contest = new Contest({
-        price: contestType.prize,
+        price: req.body.prize,
         totalSpots: contestType.totalSpots,
         spotsLeft: contestType.totalSpots,
         matchId: match.matchId,
