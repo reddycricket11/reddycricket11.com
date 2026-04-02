@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const contestSchema = new mongoose.Schema(
   {
-    prize: {
+    price: {
       type: Number,
       required: true,
     },
