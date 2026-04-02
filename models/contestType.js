@@ -27,17 +27,18 @@ const contestTypeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    prizeDetails: [
-  {
-    rank: {
-      type: Number,
-      required: true,
-    },
-    prize: {
-      type: Number,
-      required: true,
-    },
-  },
+    prizes: {
+      type: [
+        {
+          rank: {
+            type: Number,
+            required: true,
+          },
+          amount: {
+            type: Number,
+            required: true,
+          },
+        },
       ], // Array of objects to store the list of prizes based on rank
       required: true,
     },
