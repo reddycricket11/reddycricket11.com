@@ -153,7 +153,7 @@ module.exports.addMatchtoDb = async function () {
               }));
 
               const contest = await Contest.create({
-
+  entryFee: contestTypes[k].entryFee, 
   totalSpots: contestTypes[k].totalSpots,
   spotsLeft: contestTypes[k].totalSpots,
   matchId: matchId,
