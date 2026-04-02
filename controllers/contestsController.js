@@ -299,28 +299,23 @@ router.get("/getteam/:teamId", async (req, res) => {
       matchId: String(team.matchId)
     });
 
-    // अगर match नहीं मिला → allow
     if (!match) {
       return res.json(team);
     }
 
-    const now = new Date();
-const matchTime = new Date(match.date);
+    console.log("isInPlay:", match.isInPlay);
 
-console.log("NOW:", now);
-console.log("MATCH TIME:", matchTime);
+    // 🔒 lock only if match NOT live
+    if (
+      !match.isInPlay &&
+      String(team.userId) !== uid
+    ) {
+      return res.status(403).json({
+        message: "Team locked"
+      });
+    }
 
-// 🔒 opponent team lock only before match start
-if (
-  now < matchTime &&
-  String(team.userId) !== uid
-) {
-  return res.status(403).json({
-    message: "Team locked"
-  });
-}
-
-    // ✅ अपनी team always visible
+    // ✅ show team
     res.json(team);
 
   } catch (err) {
@@ -328,5 +323,4 @@ if (
     res.status(500).json({ message: "Server error" });
   }
 });
-
 module.exports = router;
