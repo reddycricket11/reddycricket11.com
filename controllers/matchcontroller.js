@@ -71,7 +71,7 @@ router.post("/create", async (req, res) => {
             }));
 
             const contest1 = new Contest({
-                price: contestTypes[k].prizes[0].amount,
+                price: contestTypes[k].prize,
                 totalSpots: contestTypes[k].totalSpots,
                 spotsLeft: contestTypes[k].totalSpots,
                 matchId: matchId,
