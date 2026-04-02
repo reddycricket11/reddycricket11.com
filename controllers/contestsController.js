@@ -224,7 +224,7 @@ router.post("/createContestType", async (req, res) => {
 
       // Create new contest for this match
       const contest = new Contest({
-         prize: contestType.prize,
+        price: contestType.prize,
         totalSpots: contestType.totalSpots,
         spotsLeft: contestType.totalSpots,
         matchId: match.matchId,
