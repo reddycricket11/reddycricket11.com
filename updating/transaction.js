@@ -35,7 +35,7 @@ module.exports.startTransaction = async function () {
     console.log("👉 MATCH ID:", matches[i].matchId); // ✅ 3
     console.log("👉 RESULT:", matches[i].result); // ✅ 4
     console.log("👉 TRANSACTION:", matches[i].transaction); // ✅ 5
-    if (matches[i].result == "Complete" && !matches[i].transaction) {
+    if (matches[i].result?.toLowerCase() === "complete" && !matches[i].transaction) {
       console.log("✅ MATCH ELIGIBLE FOR TRANSACTION"); // ✅ 6
 
       const contests = await Contest.find({ matchId: matches[i].matchId });
@@ -68,12 +68,10 @@ module.exports.startTransaction = async function () {
         // ✅ prize distribution
         for (let j = 0; j < teams.length; j++) {
        console.log("🏆 PRIZE INDEX:", j); // ✅ 9
-          console.log("🏆 PRIZE AMOUNT:", contests[k].prizes[j].amount); // ✅ 10
-          const prizeAmount = contests[k].prizes[j].amount;
+          const prizeAmount = Number(teams[j].won) || 0;
+console.log("💰 WINNING:", prizeAmount);
             if (prizeAmount <= 0) continue;
           // ✅ index safety
-          if (!teams[j] || !teams[j].userId) continue;
-         console.log("❌ TEAM OR USER NOT FOUND"); // ✅ 11
           const user = await User.findById(teams[j].userId);
           if (!user) continue;
            console.log("👤 USER ID:", teams[j].userId); // ✅ 12
