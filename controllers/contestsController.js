@@ -300,23 +300,23 @@ router.get("/getteam/:teamId", async (req, res) => {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    console.log("TEAM MATCH ID:", team.matchId);
-
     const match = await Match.findOne({
-      matchId: Number(team.matchId) // 🔥 fix यहाँ है
+      matchId: String(team.matchId) // ✅ FIX
     });
 
+    console.log("TEAM USER:", team.userId);
+    console.log("LOGIN USER:", uidfromtoken);
     console.log("MATCH:", match);
 
     if (!match) {
-      return res.json(team);
+      return res.json(team); // fallback
     }
 
-    const matchStatus = match.status;
+    const matchStatus = match.status || "upcoming";
 
     if (
       matchStatus === "upcoming" &&
-      team.userId.toString() !== uidfromtoken
+      String(team.userId) !== String(uidfromtoken)
     ) {
       return res.status(403).json({
         message: "Team locked"
