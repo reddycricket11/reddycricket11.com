@@ -192,7 +192,7 @@ module.exports.addMatchesForAllCurrentSeries = async function () {
                             prizeHolder: ""
                         }));
                         const contest1 = new Contest({
-                            price: contestTypes[k].entryFee * contestTypes[k].totalSpots
+                            price: contestTypes[k].entryFee * contestTypes[k].totalSpots,
                             totalSpots: contestTypes[k].totalSpots,
                             spotsLeft: contestTypes[k].totalSpots,
                             matchId: matchId,
