@@ -66,11 +66,11 @@ module.exports.startTransaction = async function () {
         if (!teams.length) continue;
 
         // ✅ prize distribution
-        for (let j = 0; j < contests[k].prizes.length; j++) {
+        for (let j = 0; j < teams.length; j++) {
        console.log("🏆 PRIZE INDEX:", j); // ✅ 9
           console.log("🏆 PRIZE AMOUNT:", contests[k].prizes[j].amount); // ✅ 10
           const prizeAmount = contests[k].prizes[j].amount;
-
+            if (prizeAmount <= 0) continue;
           // ✅ index safety
           if (!teams[j] || !teams[j].userId) continue;
          console.log("❌ TEAM OR USER NOT FOUND"); // ✅ 11
