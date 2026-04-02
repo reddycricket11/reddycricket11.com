@@ -304,21 +304,21 @@ router.get("/getteam/:teamId", async (req, res) => {
       return res.json(team);
     }
 
-    const matchStatus = match.status || "upcoming";
+    const now = new Date();
+const matchTime = new Date(match.date);
 
-    console.log("TEAM USER:", team.userId);
-    console.log("LOGIN USER:", uid);
-    console.log("MATCH STATUS:", matchStatus);
+console.log("NOW:", now);
+console.log("MATCH TIME:", matchTime);
 
-    // 🔒 opponent team lock
-    if (
-      matchStatus === "upcoming" &&
-      String(team.userId) !== uid
-    ) {
-      return res.status(403).json({
-        message: "Team locked"
-      });
-    }
+// 🔒 opponent team lock only before match start
+if (
+  now < matchTime &&
+  String(team.userId) !== uid
+) {
+  return res.status(403).json({
+    message: "Team locked"
+  });
+}
 
     // ✅ अपनी team always visible
     res.json(team);
