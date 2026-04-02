@@ -135,8 +135,9 @@ router.get("/joincontest/:id", async (req, res) => {
     const date = new Date();
 
     if (date < match.date) {
-      if (user.cryptoWallet >= contest.price / (contest.totalSpots*1000000)) {
-        user.cryptoWallet -= contest.price / (contest.totalSpots*1000000);
+     if (date < match.date) {
+  if (user.cryptoWallet >= (contest.entryFee / 1000000)) {
+    user.cryptoWallet -= (contest.entryFee / 1000000);
         user.numberOfContestJoined += 1;
         contest.userIds.push(req.body.uidfromtoken);
         contest.teamsId.push(req.query.teamid);
