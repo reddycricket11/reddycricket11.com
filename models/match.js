@@ -190,6 +190,13 @@ const matchSchema = new mongoose.Schema(
       ref: "Series",   // references Series collection
       required: true,
     },
+    // 🔥 ADD THIS
+status: {
+  type: String,
+  enum: ["upcoming", "live", "completed"],
+  default: "upcoming"
+},
+
 
     importance: {
       type: String,
