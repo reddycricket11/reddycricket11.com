@@ -57,17 +57,23 @@ module.exports.startTransaction = async function () {
           teams = teams.sort(compare);
         }
 
-        // ✅ prizeDetails replace with prizes (IMPORTANT)
+        // ✅ SAFETY CHECK
+        if (!teams.length) continue;
+
+        // ✅ prize distribution
         for (let j = 0; j < contests[k].prizes.length; j++) {
 
           const prizeAmount = contests[k].prizes[j].amount;
 
-          if (teams.length > 0 && teams[j]?.userId) {
+          // ✅ index safety
+          if (!teams[j] || !teams[j].userId) continue;
 
-            const user = await User.findById(teams[j].userId);
-            if (!user) continue;
+          const user = await User.findById(teams[j].userId);
+          if (!user) continue;
 
-            // ✅ सिर्फ winner को पैसा
+          try {
+
+            // ✅ only winner gets money
             if (prizeAmount > 0) {
 
               user.wallet += prizeAmount;
@@ -83,40 +89,44 @@ module.exports.startTransaction = async function () {
               user.totalAmountWon += prizeAmount;
             }
 
-            try {
+            await user.save();
 
-              await user.save();
+            // ✅ notification
+            if (user?.fcmtoken) {
+              const message = {
+                notification: {
+                  title: "Match Result",
+                  body:
+                    prizeAmount > 0
+                      ? `You won ₹${prizeAmount}! Check your wallet for details.`
+                      : `Better luck next time`,
+                },
+                token: user.fcmtoken,
+              };
 
-              if (user?.fcmtoken) {
-                const message = {
-                  notification: {
-                    title: "Match Result",
-                    body:
-                      prizeAmount > 0
-                        ? `You won ₹${prizeAmount}! Check your wallet for details.`
-                        : `Better luck next time`,
-                  },
-                  token: user.fcmtoken,
-                };
-
-                await messaging.send(message);
-              }
-
-              const matchUpdate = await MatchLive.updateOne(
-                { matchId: matches[i]?.matchId },
-                {
-                  $set: {
-                    transaction: true,
-                  },
-                }
-              );
-
-            } catch (e) {
-              console.log(e);
+              await messaging.send(message);
             }
+
+          } catch (e) {
+            console.log("USER ERROR:", e);
           }
         }
       }
+
+      // ✅ IMPORTANT FIX: match transaction update AFTER ALL USERS
+      try {
+        await MatchLive.updateOne(
+          { matchId: matches[i]?.matchId },
+          {
+            $set: {
+              transaction: true,
+            },
+          }
+        );
+      } catch (e) {
+        console.log("MATCH UPDATE ERROR:", e);
+      }
+
     }
   }
 };
