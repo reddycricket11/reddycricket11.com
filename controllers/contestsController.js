@@ -136,31 +136,41 @@ router.get("/joincontest/:id", async (req, res) => {
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
   if (date < match.date) {
-    if (user.wallet >= contest.entryFee) {
-    user.wallet -= (contest.entryFee);
-      user.numberOfContestJoined = user.numberOfContestJoined + 1;
-      contest.userIds.push(req.body.uidfromtoken);
-      contest.teamsId.push(req.query.teamid);
-      contest.spotsLeft -= 1;
-      await Transaction.create({
-        userId: req.body.uidfromtoken,
-        amount: contest.entryFee,
-        action: "entry fee",
-        status: "completed",
-        transactionId: contest._id
-      });
-      await contest.save();
-      await user.save();
-      res.status(200).json({
-        contest,
-      });
-    } else {
-      res.status(400).json({
-        message: "can't join contest due to insufficient balance",
-        success: false,
-      });
-    }
-  }
+   const entryFee = Number(contest.price / contest.totalSpots);
+
+if (Number(user.wallet || 0) >= entryFee) {
+
+  user.wallet = Number(user.wallet || 0) - entryFee;
+
+  user.numberOfContestJoined += 1;
+
+  contest.userIds.push(req.body.uidfromtoken);
+  contest.teamsId.push(req.query.teamid);
+  contest.spotsLeft -= 1;
+
+  await Transaction.create({
+    userId: req.body.uidfromtoken,
+    amount: entryFee,
+    action: "entry fee",
+    status: "completed",
+    transactionId: contest._id
+  });
+
+  await contest.save();
+  await user.save();
+
+  console.log("ENTRY CUT:", user._id, entryFee);
+
+  res.status(200).json({
+    contest,
+  });
+
+} else {
+  res.status(400).json({
+    message: "Insufficient balance",
+    success: false,
+  });
+}
   else {
     res.status(400).json({
       message: "can't join contest, time's up",
