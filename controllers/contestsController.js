@@ -300,10 +300,19 @@ router.get("/getteam/:teamId", async (req, res) => {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    const match = await Match.findOne({ matchId: team.matchId });
-    const matchStatus = match?.status;
+    console.log("TEAM MATCH ID:", team.matchId);
 
-    console.log("Match Status:", matchStatus);
+    const match = await Match.findOne({
+      matchId: Number(team.matchId) // 🔥 fix यहाँ है
+    });
+
+    console.log("MATCH:", match);
+
+    if (!match) {
+      return res.json(team);
+    }
+
+    const matchStatus = match.status;
 
     if (
       matchStatus === "upcoming" &&
@@ -317,12 +326,8 @@ router.get("/getteam/:teamId", async (req, res) => {
     res.json(team);
 
   } catch (err) {
-    console.log(err);
+    console.log("ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
-
-// ==============================
-// 👇 यह पहले से है (मत हटाना)
-// ==============================
 module.exports = router;
