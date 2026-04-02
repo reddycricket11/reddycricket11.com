@@ -165,9 +165,9 @@ router.get("/myMatches", async (req, res) => {
               if (arr[x].userId == req.query.userid) {
               }
               try {
-               if (contests[i]?.prizes[x]?.amount) {
-  totalwon = contests[i]?.prizes[x]?.amount + totalwon;
-}
+                if (contests[i]?.prizeDetails[x]?.prize) {
+                  totalwon = contests[i]?.prizeDetails[x]?.prize + totalwon;
+                }
               } catch (err) {
                 console.log(err, "err");
               }
