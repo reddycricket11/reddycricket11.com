@@ -303,11 +303,15 @@ router.get("/getteam/:teamId", async (req, res) => {
       return res.json(team);
     }
 
-    console.log("isInPlay:", match.isInPlay);
+    console.log("MATCH RESULT:", match.result);
 
-    // 🔒 lock only if match NOT live
+    // 🔥 FIX: result based logic
+    const isMatchLive = match.result === "In Progress";
+
+    // 🔒 lock only before match start
     if (
-      !match.isInPlay &&
+      !isMatchLive &&
+      new Date() < new Date(match.date) &&
       String(team.userId) !== uid
     ) {
       return res.status(403).json({
@@ -315,7 +319,7 @@ router.get("/getteam/:teamId", async (req, res) => {
       });
     }
 
-    // ✅ show team
+    // ✅ allow after match start or live
     res.json(team);
 
   } catch (err) {
