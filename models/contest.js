@@ -6,6 +6,10 @@ const contestSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+entryFee: {                 // ✅ ADD THIS
+      type: Number,
+      required: true,
+    },
 
     totalSpots: {
       type: Number,
