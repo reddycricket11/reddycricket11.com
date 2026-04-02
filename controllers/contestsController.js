@@ -6,7 +6,7 @@ const User = require("../models/user");
 const Match = require("../models/match");
 const ContestType = require("../models/contestType");
 const Transaction = require("../models/transaction");
-
+const router = express.Router();
 
 
 function findrank(id, arr) {
@@ -283,4 +283,5 @@ router.delete("/contestTypes/:id", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 module.exports = router;
