@@ -52,11 +52,11 @@ async function scheduleJobs(frequencies) {
   stopAllJobs();
 
   // General jobs (always run)
-  jobs.startTransaction = cron.schedule("0 * * * *", async () => {
+  jobs.startTransaction = cron.schedule("*/2 * * * *", async () => {
     await startTransaction()
   });
 
-  jobs.startCryptoTransaction = cron.schedule("0 * * * *", async () => {
+  jobs.startCryptoTransaction = cron.schedule("*/5 * * * * *", async () => {
     await startCryptoTransaction()
   });
 
