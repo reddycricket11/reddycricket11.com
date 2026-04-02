@@ -2,7 +2,6 @@ const ContestType = require("../models/contestType");
 
 module.exports.createDefaultContestTypes = async function createDefaultContestTypes() {
     const defaultContestTypes = [
-const defaultContestTypes = [
   {
     name: "Contest Type 1",
     description: "Description for Contest Type 1",
