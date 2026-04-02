@@ -192,6 +192,17 @@ router.get("/reJoinCn/:id", async (req, res) => {
     });
   }
 });
+// Route to create a new contest type
+router.post("/cruateContestType", async (req, res) => {
+  try {
+    console.log(req.body,'req body')
+    const contestType = new ContestType(req.body);
+    await contestType.save();
+    res.status(201).json(contestType);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 router.post("/createContestType", async (req, res) => {
   try {
