@@ -6,7 +6,7 @@ const User = require("../models/user");
 const Match = require("../models/match");
 const ContestType = require("../models/contestType");
 const Transaction = require("../models/transaction");
-const router = express.Router(); 
+
 
 
 function findrank(id, arr) {
@@ -281,53 +281,6 @@ router.delete("/contestTypes/:id", async (req, res) => {
     res.status(200).json(contestType);
   } catch (error) {
     res.status(500).json({ error: error.message });
-  }
-});
-// 👇 तेरा सारा पुराना code ऊपर रहेगा
-
-// ==============================
-// 🔥 NEW ROUTE (यहाँ डाल)
-// ==============================
-
-router.get("/getteam/:teamId", async (req, res) => {
-  try {
-    const { teamId } = req.params;
-    const { uidfromtoken } = req.query;
-
-    const team = await Team.findById(teamId);
-
-    if (!team) {
-      return res.status(404).json({ message: "Team not found" });
-    }
-
-    const match = await Match.findOne({
-      matchId: String(team.matchId) // ✅ FIX
-    });
-
-    console.log("TEAM USER:", team.userId);
-    console.log("LOGIN USER:", uidfromtoken);
-    console.log("MATCH:", match);
-
-    if (!match) {
-      return res.json(team); // fallback
-    }
-
-    const matchStatus = match.status || "upcoming";
-
-    if (
-      matchStatus === "upcoming" &&
-      String(team.userId) !== String(uidfromtoken)
-    ) {
-      return res.status(403).json({
-        message: "Team locked"
-      });
-    }
-
-    res.json(team);
-
-  } catch (err) {
-    console.log("ERROR:", err);
-    res.status(500).json({ message: "Server error" });
   }
 });
 module.exports = router;
