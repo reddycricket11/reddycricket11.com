@@ -284,4 +284,49 @@ router.delete("/contestTypes/:id", async (req, res) => {
   }
 });
 
+router.get("/getteam/:teamId", async (req, res) => {
+  try {
+    const { teamId } = req.params;
+    const uid = String(req.query.uidfromtoken || "");
+
+    const team = await Team.findById(teamId);
+
+    if (!team) {
+      return res.status(404).json({ message: "Team not found" });
+    }
+
+    const match = await Match.findOne({
+      matchId: String(team.matchId)
+    });
+
+    // अगर match नहीं मिला → allow
+    if (!match) {
+      return res.json(team);
+    }
+
+    const matchStatus = match.status || "upcoming";
+
+    console.log("TEAM USER:", team.userId);
+    console.log("LOGIN USER:", uid);
+    console.log("MATCH STATUS:", matchStatus);
+
+    // 🔒 opponent team lock
+    if (
+      matchStatus === "upcoming" &&
+      String(team.userId) !== uid
+    ) {
+      return res.status(403).json({
+        message: "Team locked"
+      });
+    }
+
+    // ✅ अपनी team always visible
+    res.json(team);
+
+  } catch (err) {
+    console.log("ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;
