@@ -168,12 +168,12 @@ const userTeams = arr.filter(a =>
 
 userTeams.forEach(userTeam => {
 
-  const rank = userTeam.rank; // 👉 DB से ले
-  if (!userTeam.rank) return;
+  const rank = userTeam.rank;
+if (!userTeam.rank) return;
 
 const index = userTeam.rank - 1;
 
-  const prize = contests[i]?.prizeDetails?.[index]?.prize || 0;
+const prize = contests[i]?.prizeDetails?.[index]?.prize || 0;
 
   console.log("USER TEAM:", userTeam._id);
   console.log("RANK:", rank);
