@@ -162,16 +162,17 @@ router.get("/myMatches", async (req, res) => {
 
             arr = arr.sort((a, b) => b?.points - a?.points);
             for (let x = 0; x < arr.length; x++) {
-  try {
-    // user team match करो
-    if (arr[x].userId.toString() === req.body.uidfromtoken.toString()) {
-      const prize = contests[i]?.prizeDetails[x]?.prize || 0;
-      totalwon = prize;
-      break; // मिल गया तो loop रोक दो
+
+  if (arr[x].userId == req.query.userid) {
+    try {
+      // 👉 सिर्फ उसी rank का prize लो
+      totalwon = contests[i]?.prizeDetails[x]?.prize || 0;
+      break; // 👈 बहुत जरूरी
+    } catch (err) {
+      console.log(err, "err");
     }
-  } catch (err) {
-    console.log(err, "err");
   }
+
 }
 
 mat.won = totalwon;
