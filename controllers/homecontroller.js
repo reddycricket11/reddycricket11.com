@@ -163,7 +163,8 @@ router.get("/myMatches", async (req, res) => {
             arr = arr.sort((a, b) => b?.points - a?.points);
             
 const userTeams = arr.filter(a => 
-  a.userId.toString() === req.body.uidfromtoken.toString()
+  a.userId.toString() === req.body.uidfromtoken.toString() &&
+  contests[i]?.teamsId?.includes(a._id.toString())
 );
 
 userTeams.forEach(userTeam => {
