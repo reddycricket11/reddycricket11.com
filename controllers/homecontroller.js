@@ -167,7 +167,11 @@ const userTeam = arr.find(a => a.userId.toString() === req.body.uidfromtoken.toS
 
 // rank nikaalo
 const rank = arr.findIndex(a => a.userId.toString() === req.body.uidfromtoken.toString());
-
+// 🔥 DEBUG YAHI DAAL
+  console.log("MATCH ID:", mat.id);
+  console.log("ARR LENGTH:", arr.length);
+  console.log("RANK:", rank);
+  console.log("PRIZE:", contests[i]?.prizeDetails?.[rank]);
 // prize do
 if (rank !== -1 && contests[i]?.prizeDetails[rank]?.prize) {
   totalwon = contests[i].prizeDetails[rank].prize;
