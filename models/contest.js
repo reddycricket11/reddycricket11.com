@@ -59,6 +59,11 @@ const contestSchema = new mongoose.Schema(
       lowercase: true,
       default: "Server-Domino-Beton",
     },
+    
+    isDistributed: {
+  type: Boolean,
+  default: false,
+},
 
     userIds: [
       {
