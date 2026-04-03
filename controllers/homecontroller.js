@@ -168,15 +168,16 @@ const userTeams = arr.filter(a =>
 
 userTeams.forEach(userTeam => {
 
-  const rank = userTeam.rank;
-if (!userTeam.rank) return;
+  // 🔥 rank calculate from sorted array
+  const rankIndex = arr.findIndex(
+    a => a._id.toString() === userTeam._id.toString()
+  );
 
-const index = userTeam.rank - 1;
+  if (rankIndex === -1) return;
 
-const prize = contests[i]?.prizeDetails?.[index]?.prize || 0;
+  const prize = contests[i]?.prizeDetails?.[rankIndex]?.prize || 0;
 
-  console.log("USER TEAM:", userTeam._id);
-  console.log("RANK:", rank);
+  console.log("RANK:", rankIndex + 1);
   console.log("PRIZE:", prize);
 
   totalwon += prize;
