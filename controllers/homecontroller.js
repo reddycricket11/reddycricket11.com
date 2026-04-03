@@ -133,8 +133,8 @@ router.get("/myMatches", async (req, res) => {
         if (contests.length > 0 || teams.length > 0) {
           mat.contests = contests;
           mat.teams = teams;
+          let totalwon = 0;
           for (let i = 0; i < contests?.length; i++) {
-            let totalwon = 0;
             let arr = [];
             for (let j = 0; j < contests[i]?.teamsId?.length; j++) {
               if (
@@ -167,20 +167,21 @@ const userTeams = arr.filter(a =>
 );
 
 userTeams.forEach(userTeam => {
-  const rank = arr.findIndex(a => 
-    a._id.toString() === userTeam._id.toString()
-  );
 
-  console.log("TEAM ID:", userTeam._id.toString());
+  const rank = userTeam.rank; // 👉 DB से ले
+  if (!userTeam.rank) return;
+
+const index = userTeam.rank - 1;
+
+  const prize = contests[i]?.prizeDetails?.[index]?.prize || 0;
+
+  console.log("USER TEAM:", userTeam._id);
   console.log("RANK:", rank);
-  console.log("PRIZE:", contests[i]?.prizeDetails?.[rank]);
+  console.log("PRIZE:", prize);
 
-  if (rank !== -1 && contests[i]?.prizeDetails?.[rank]?.prize) {
-    totalwon += contests[i].prizeDetails[rank].prize;
-  }
+  totalwon += prize;
 });
-
-mat.won = totalwon + mat.won;
+mat.won = totalwon;
             }
           completedMatches.results.push(mat);
         }
