@@ -162,22 +162,23 @@ router.get("/myMatches", async (req, res) => {
 
             arr = arr.sort((a, b) => b?.points - a?.points);
             
-// user ki team find karo
-const userTeam = arr.find(a => a.userId.toString() === req.body.uidfromtoken.toString());
+const userTeams = arr.filter(a => 
+  a.userId.toString() === req.body.uidfromtoken.toString()
+);
 
-// rank nikaalo
-const rank = arr.findIndex(a => a.userId.toString() === req.body.uidfromtoken.toString());
-// 🔥 DEBUG YAHI DAAL
-  console.log("MATCH ID:", mat.id);
-  console.log("ARR LENGTH:", arr.length);
+userTeams.forEach(userTeam => {
+  const rank = arr.findIndex(a => 
+    a._id.toString() === userTeam._id.toString()
+  );
+
+  console.log("TEAM ID:", userTeam._id.toString());
   console.log("RANK:", rank);
   console.log("PRIZE:", contests[i]?.prizeDetails?.[rank]);
-// prize do
-if (rank !== -1 && contests[i]?.prizeDetails[rank]?.prize) {
-  totalwon = contests[i].prizeDetails[rank].prize;
-} else {
-  totalwon = 0;
-}
+
+  if (rank !== -1 && contests[i]?.prizeDetails?.[rank]?.prize) {
+    totalwon += contests[i].prizeDetails[rank].prize;
+  }
+});
 
 mat.won = totalwon + mat.won;
             }
