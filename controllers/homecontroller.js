@@ -161,19 +161,26 @@ router.get("/myMatches", async (req, res) => {
             }
 
             arr = arr.sort((a, b) => b?.points - a?.points);
-            arr = arr.sort((a, b) => b?.points - a?.points);
+
+let userRank = -1;
 
 for (let x = 0; x < arr.length; x++) {
-
   if (arr[x].userId.toString() === req.body.uidfromtoken.toString()) {
-    try {
-      totalwon = contests[i]?.prizeDetails[x]?.prize || 0;
-      break;
-    } catch (err) {
-      console.log(err, "err");
-    }
+    userRank = x + 1;
+    break;
   }
+}
 
+let totalwon = 0;
+
+if (userRank !== -1) {
+  const prizeObj = contests[i]?.prizeDetails.find(
+    (p) => p.rank === userRank
+  );
+
+  if (prizeObj) {
+    totalwon = prizeObj.prize;
+  }
 }
 
 mat.won = totalwon;
