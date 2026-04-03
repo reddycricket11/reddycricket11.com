@@ -34,8 +34,12 @@ module.exports.startTransaction = async function () {
     }
 
     const contests = await Contest.find({ matchId: matches[i].matchId });
+    // ✅ contest already processed skip
+if (!contests.length) continue;
 
     for (let k = 0; k < contests.length; k++) {
+      // ✅ already distributed contest skip
+if (contests[k].isDistributed) continue;
       let teams = [];
 
       contests[k].teamsId = contests[k].teamsId.filter((t) => t);
@@ -96,6 +100,9 @@ module.exports.startTransaction = async function () {
           }
         }
       }
+      // ✅ contest ko processed mark karo
+contests[k].isDistributed = true;
+await contests[k].save();
     }
 
     // 👉 FIX 3: match ko processed mark karo
