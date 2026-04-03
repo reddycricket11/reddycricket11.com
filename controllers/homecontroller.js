@@ -171,7 +171,7 @@ for (let i = 0; i < contests.length; i++) {
   arr = arr.sort((a, b) => b.points - a.points);
 
   for (let x = 0; x < arr.length; x++) {
-    if (arr[x].userId.toString() === req.body.uidfromtoken.toString()) {
+    if (String(arr[x].userId) === String(req.body.uidfromtoken)) {
       userRank = x + 1;
       break;
     }
