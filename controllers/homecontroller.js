@@ -46,10 +46,8 @@ router.get("/myMatches", async (req, res) => {
     }
   });
   const teampromises = user.matchIds.map((id) =>
-    Team.find({
-      $and: [{ matchId: id }, { userId: req.body.uidfromtoken }],
-    })
-  );
+  Team.find({ matchId: id }) // ✅ ALL USERS TEAMS
+);
 
   const contestpromises = user.matchIds.map((id) =>
     Contest.find({
@@ -142,11 +140,11 @@ router.get("/myMatches", async (req, res) => {
                 !(contests[i]?.teamsId[j] == false)
               ) {
                 try {
-                  const ta = allteams.find((a) => {
-                    if (contests[i]?.teamsId[j] == a._id.toString()) {
-                      return true;
-                    }
-                  });
+                  const ta = allteams.find(
+  (a) =>
+    a._id.toString() === contests[i]?.teamsId[j] &&
+    a.matchId === contests[i].matchId // 🔥 सही match filter
+);
 
                   if (ta) {
                     if (!ta.points) {
