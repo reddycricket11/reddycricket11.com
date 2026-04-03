@@ -162,28 +162,33 @@ router.get("/myMatches", async (req, res) => {
 
             arr = arr.sort((a, b) => b?.points - a?.points);
 
-let userRank = -1;
+for (let i = 0; i < contests.length; i++) {
 
-for (let x = 0; x < arr.length; x++) {
-  if (arr[x].userId.toString() === req.body.uidfromtoken.toString()) {
-    userRank = x + 1;
-    break;
+  let totalwon = 0; // ✅ only here
+
+  let userRank = -1;
+
+  arr = arr.sort((a, b) => b.points - a.points);
+
+  for (let x = 0; x < arr.length; x++) {
+    if (arr[x].userId.toString() === req.body.uidfromtoken.toString()) {
+      userRank = x + 1;
+      break;
+    }
   }
-}
 
-let totalwon = 0;
+  if (userRank !== -1) {
+    const prizeObj = contests[i]?.prizeDetails.find(
+      (p) => p.rank === userRank
+    );
 
-if (userRank !== -1) {
-  const prizeObj = contests[i]?.prizeDetails.find(
-    (p) => p.rank === userRank
-  );
-
-  if (prizeObj) {
-    totalwon = prizeObj.prize;
+    if (prizeObj) {
+      totalwon = prizeObj.prize;
+    }
   }
-}
 
-mat.won = totalwon;
+  mat.won += totalwon; // 👈 add करो (multiple contest case)
+}
           }
           completedMatches.results.push(mat);
         }
