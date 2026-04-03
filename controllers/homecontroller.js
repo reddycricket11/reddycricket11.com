@@ -176,6 +176,7 @@ if (rank !== -1 && contests[i]?.prizeDetails[rank]?.prize) {
 }
 
 mat.won = totalwon + mat.won;
+            }
           completedMatches.results.push(mat);
         }
       }
