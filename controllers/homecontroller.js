@@ -175,7 +175,6 @@ for (let x = 0; x < arr.length; x++) {
             }
             mat.won = totalwon + mat.won;
           }
-          }
           completedMatches.results.push(mat);
         }
       }
