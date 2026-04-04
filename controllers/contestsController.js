@@ -138,10 +138,20 @@ router.get("/joincontest/:id", async (req, res) => {
   if (date < match.date) {
   if (user.wallet >= contest.price / contest.totalSpots) {
       user.wallet -= (contest.price / contest.totalSpots);
-    user.wallet -= entryFee;
+   if (user.wallet < entryFee) {
+  return res.status(400).json({
+    message: "Insufficient balance",
+    success: false,
+  });
+}
 
-  // ✅ FIXED (NO ERROR)
-  user.totalAmountAdded = Math.max(0, user.totalAmountAdded - entryFee);
+user.wallet -= entryFee;
+
+// ✅ SAFE DEDUCTION
+if (user.totalAmountAdded > 0) {
+  const deduct = Math.min(user.totalAmountAdded, entryFee);
+  user.totalAmountAdded -= deduct;
+}
       user.numberOfContestJoined = user.numberOfContestJoined + 1;
       contest.userIds.push(req.body.uidfromtoken);
       contest.teamsId.push(req.query.teamid);
