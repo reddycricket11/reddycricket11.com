@@ -71,7 +71,7 @@ app.use('/', video);
 app.use("/auth", auth);
 app.use("/", player);
 app.use("/", series);
-app.use("/admin", checkloggedinuser, admin)
+app.use("/api/admin", checkloggedinuser, admin)
 app.use("/payment", checkloggedinuser, payments);
 app.use("/crypto", checkloggedinuser, cryptoPaymentController);
 app.use("/cryptocontest", checkloggedinuser, cryptoContestController);
