@@ -138,6 +138,12 @@ router.get("/joincontest/:id", async (req, res) => {
   if (date < match.date) {
   if (user.wallet >= contest.price / contest.totalSpots) {
       user.wallet -= (contest.price / contest.totalSpots);
+    user.wallet -= entryFee;
+
+  // ✅ YE LINE ADD KARNI HAI (MAIN FIX)
+  if (user.totalAmountAdded >= entryFee) {
+    user.totalAmountAdded -= entryFee;
+  }
       user.numberOfContestJoined = user.numberOfContestJoined + 1;
       contest.userIds.push(req.body.uidfromtoken);
       contest.teamsId.push(req.query.teamid);
