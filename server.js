@@ -8,6 +8,7 @@ const path = require('path');
 const bodyParser = require("body-parser");
 const home = require("./controllers/homecontroller");
 const video = require("./controllers/video/videocontroller.js");
+const manualWithdrawRoutes = require("./controllers/manualWithdrawController");
 const contest = require("./controllers/contestsController");
 const teamdata = require("./controllers/playerscontroller.js");
 const auth = require("./controllers/user_controller");
@@ -71,7 +72,8 @@ app.use('/', video);
 app.use("/auth", auth);
 app.use("/", player);
 app.use("/", series);
-app.use("/api/admin", checkloggedinuser, admin)
+app.use("/api/admin", checkloggedinuser, admin);
+app.use("/api", manualWithdrawRoutes);
 app.use("/payment", checkloggedinuser, payments);
 app.use("/crypto", checkloggedinuser, cryptoPaymentController);
 app.use("/cryptocontest", checkloggedinuser, cryptoContestController);
