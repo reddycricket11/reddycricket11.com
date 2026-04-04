@@ -74,6 +74,13 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+
+    // ✅ NEW FIELD (IMPORTANT)
+    winnings: {
+      type: Number,
+      default: 0,
+    },
+    
     wallet: {
       type: Number,
       required: true,
