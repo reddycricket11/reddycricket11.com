@@ -511,6 +511,14 @@ router.post("/manual-withdraw", async (req, res) => {
       userId,
       isWithdrawCompleted: true
     });
+    
+    await Transaction.create({
+  userId,
+  amount: Number(amount),
+  type: "withdraw",
+  status: "completed",
+  action: "withdraw"
+});
 
     user.wallet -= Number(amount);
 
