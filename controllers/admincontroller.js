@@ -519,10 +519,20 @@ router.post("/manual-withdraw", async (req, res) => {
   status: "completed",
   action: "withdraw"
 });
+   let withdrawAmount = Number(amount);
 
-    user.wallet -= Number(amount);
+// 🔥 winnings logic
+if (user.winnings >= withdrawAmount) {
+  user.winnings -= withdrawAmount;
+} else {
+  withdrawAmount -= user.winnings;
+  user.winnings = 0;
+}
 
-    await user.save();
+// 💰 wallet minus
+user.wallet -= Number(amount);
+
+await user.save();
 
     return res.status(200).json({
       message: "Manual Withdraw Success",
