@@ -506,27 +506,29 @@ router.post("/manual-withdraw", async (req, res) => {
       });
     }
 
-    await Withdraw.create({
-      amount: Number(amount),
-      userId,
-      isWithdrawCompleted: true
-    });
+    const withdraw = await Withdraw.create({
+  amount: Number(amount),
+  userId,
+  isWithdrawCompleted: true,
+  status: "completed"
+});
     
     await Transaction.create({
   userId,
   amount: Number(amount),
   type: "withdraw",
   status: "completed",
-  action: "withdraw"
+  action: "withdraw",
+  transactionId: withdraw._id
 });
    let withdrawAmount = Number(amount);
 
 // 🔥 winnings logic
-if (user.winnings >= withdrawAmount) {
-  user.winnings -= withdrawAmount;
+if (user.totalAmountWon >= withdrawAmount) {
+  user.totalAmountWon -= withdrawAmount;
 } else {
-  withdrawAmount -= user.winnings;
-  user.winnings = 0;
+  withdrawAmount -= user.totalAmountWon;
+  user.totalAmountWon = 0;
 }
 
 // 💰 wallet minus
