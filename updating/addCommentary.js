@@ -33,7 +33,7 @@ const mailOptions = {
 
 //const db = getFirestore();
 // Add a new document with a generated id.
-module.exports.addLivecommentary = async function addcommentry() {
+//module.exports.addLivecommentary = async function addcommentry() {
   try {
     let date = new Date();
     let allMatches = [];
