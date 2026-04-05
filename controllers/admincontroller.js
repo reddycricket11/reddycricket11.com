@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const express = require("express");
 const Matches = require("../models/match");
 const Contest = require("../models/contest");
@@ -13,8 +14,39 @@ const Withdraw = require("../models/withdraw");
 const Transaction = require("../models/transaction");
 
 const router = express.Router();
+// ✅ AUTH CHECK
+const isAuthenticated = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
 
-router.get("/dashboard-data", async (req, res) => {
+    if (!token) {
+      return res.status(401).json({ message: "Login required" });
+    }
+
+    const decoded = jwt.verify(token, "SECRET_KEY");
+
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+// ✅ ADMIN CHECK
+const isAdmin = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Only admin allowed" });
+  }
+  next();
+};
+
+router.get("/dashboard-data", isAuthenticated, isAdmin, async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json({ success: true, users });
@@ -24,7 +56,7 @@ router.get("/dashboard-data", async (req, res) => {
   }
 });
 
-router.get("/sidebar-data", async (req, res) => {
+router.get("/sidebar-data", isAuthenticated, isAdmin, async (req, res) => {
   try {
     // Transactions
     const pendingWithdrawals = await Withdraw.countDocuments({
@@ -84,7 +116,7 @@ router.get("/sidebar-data", async (req, res) => {
 // --------------------
 // GET all users
 // --------------------
-router.get("/users", async (req, res) => {
+router.get("/users", isAuthenticated, isAdmin, async (req, res) => {
   try {
     const users = await User.find();
     res.status(200).json({ success: true, users });
@@ -340,7 +372,7 @@ router.post("/users", async (req, res) => {
 // --------------------
 // UPDATE existing user
 // --------------------
-router.put("/users/:id", async (req, res) => {
+router.put("/users/:id", isAuthenticated, isAdmin, async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedUser) return res.status(404).json({ success: false, message: "User not found" });
@@ -354,7 +386,7 @@ router.put("/users/:id", async (req, res) => {
 // --------------------
 // DELETE user
 // --------------------
-router.delete("/users/:id", async (req, res) => {
+router.delete("/users/:id", isAuthenticated, isAdmin, async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) return res.status(404).json({ success: false, message: "User not found" });
@@ -365,7 +397,7 @@ router.delete("/users/:id", async (req, res) => {
   }
 });
 
-router.post("/deposit", async (req, res) => {
+router.post("/deposit", isAuthenticated, isAdmin, async (req, res) => {
   console.log(req.body, "deposit");
   try {
     const deposit = await NewPayment.create({
@@ -402,7 +434,7 @@ router.post("/deposit", async (req, res) => {
 // ================================
 // ✅ MANUAL DEPOSIT (NEW)
 // ================================
-router.post("/manual-deposit", async (req, res) => {
+router.post("/manual-deposit", isAuthenticated, isAdmin, async (req, res) => {
   console.log(req.body, "manual deposit");
 
   try {
@@ -453,7 +485,7 @@ router.post("/manual-deposit", async (req, res) => {
   }
 });
 
-router.post("/withdraw", async (req, res) => {
+router.post("/withdraw", isAuthenticated, isAdmin, async (req, res) => {
   console.log(req.body, "withdraw");
   try {
     const user = await User.findById(req.body.userId);
@@ -484,7 +516,7 @@ router.post("/withdraw", async (req, res) => {
 // ================================
 // ✅ MANUAL WITHDRAW (NEW)
 // ================================
-router.post("/manual-withdraw", async (req, res) => {
+router.post("/manual-withdraw", isAuthenticated, isAdmin, async (req, res) => {
   console.log(req.body, "manual withdraw");
 
   try {
