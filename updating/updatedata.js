@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const fMatches = require("../controllers/football/fMatchDB-controller");
 const addlivescoresnew = require("./addlivescoresdetails");
-const addLiveCommentary = require("./addCommentary");
+//const addLiveCommentary = require("./addCommentary");
 
 router.get("/addlivedetails", async (req, res) => {
   try {
@@ -117,7 +117,7 @@ router.get("/addmatchids", async (req, res) => {
   }
 });
 
-router.get("/addlivecommentary", async (req, res) => {
+/*router.get("/addlivecommentary", async (req, res) => {
   try {
     await addLiveCommentary.addLivecommentary();
     res.status(200).json({
@@ -132,6 +132,7 @@ router.get("/addlivecommentary", async (req, res) => {
     });
   }
 });
+*/
 
 router.get("/addteams", async (req, res) => {
   try {
