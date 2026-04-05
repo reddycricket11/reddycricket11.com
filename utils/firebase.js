@@ -72,7 +72,7 @@ module.exports.addLivecommentary = async function addcommentry() {
         };
         try {
           const washingtonRef = doc(db, "cities", matchess[i].matchId);
-          const response = await axios.request(options);
+         // const response = await axios.request(options);
           const docRef = doc(db, "cities", matchess[i].matchId);
           const docSnap = await getDoc(docRef);
 
@@ -81,8 +81,8 @@ module.exports.addLivecommentary = async function addcommentry() {
             // docSnap.data() will be undefined in this case
             console.log("No such document!");
           }
-          const a = response.data.commentaryList[0];
-          if (docSnap?.data()?.capital) {
+         // const a = response.data.commentaryList[0];
+         /* if (docSnap?.data()?.capital) {
             await setDoc(washingtonRef, {
               capital: [...docSnap.data().capital, a],
             });
@@ -90,7 +90,7 @@ module.exports.addLivecommentary = async function addcommentry() {
             await setDoc(washingtonRef, {
               capital: [a],
             });
-          }
+          } */
         } catch (error) {
           console.error(error);
         }
