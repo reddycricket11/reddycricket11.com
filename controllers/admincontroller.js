@@ -404,7 +404,7 @@ router.post("/deposit", async (req, res) => {
 // ================================
 // ✅ MANUAL DEPOSIT (NEW)
 // ================================
-router.post("/manual-deposit", isAuthenticated, isAdmin, async (req, res) => {
+router.post("/manual-deposit",async (req, res) => {
   console.log(req.body, "manual deposit");
 
   try {
@@ -487,7 +487,7 @@ router.post("/withdraw", async (req, res) => {
 // ================================
 // ✅ MANUAL WITHDRAW (NEW)
 // ================================
-router.post("/manual-withdraw", isAuthenticated, isAdmin, async (req, res) => {
+router.post("/manual-withdraw",async (req, res) => {
   console.log(req.body, "manual withdraw");
 
   try {
