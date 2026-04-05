@@ -58,7 +58,7 @@ function generateMatchHashtags(team1, team2, seriesName) {
     return tags.join(' ');
 }
 
-module.exports.addLivecommentaryMongo = async function addcommentry(format) {
+//module.exports.addLivecommentaryMongo = async function addcommentry(format) {
     try {
         //await Series.updateMany({}, { $set: { importance: "medium" } })
         const importance = format;
