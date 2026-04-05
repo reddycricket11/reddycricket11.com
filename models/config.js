@@ -12,7 +12,7 @@ const configSchema = new mongoose.Schema(
       test: { type: Number, default: 15 },     // every 15 min
       high: { type: Number, default: 10 },     // every 10 min
       low: { type: Number, default: 60 },      // every 1 hour
-      very_high: { type: Number, default: 0.5 } //
+      very_high: { type: Number, default: 2 } //
     },
   },
   { timestamps: true }
