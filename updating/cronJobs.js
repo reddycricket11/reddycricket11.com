@@ -69,13 +69,19 @@ jobs.resetPlayerFlags = cron.schedule("0 0 * * *", async () => {
   await resetPlayerNotifiedFlags()
 });
 
+  // 👇 यहाँ डाल
+  jobs.refundMatches = cron.schedule("*/10 * * * *", async () => {
+    console.log("💸 Refund cron running...");
+    await refundAbandonedMatches();
+  });
+
 
   // Source mode jobs
   if (isSource) {
-    jobs.liveDetails = cron.schedule("*/5 * * * *", async () => {
+    jobs.liveDetails = cron.schedule("*/15 * * * * *", async () => {
       await addLiveDetails()
     })
-    jobs.inPlayStatus = cron.schedule("* * * * *", async () => {
+    jobs.inPlayStatus = cron.schedule("*/10 * * * * *", async () => {
       await addInPlayStatus()
     }, {
       scheduled: true,
@@ -143,7 +149,7 @@ jobs.resetPlayerFlags = cron.schedule("0 0 * * *", async () => {
   }
 
   // Other periodic jobs
-  jobs.addMatchDb = cron.schedule("*/30 * * * *", async () => {
+  jobs.addMatchDb = cron.schedule("*/10 * * * *", async () => {
   await addMatchtoDb();
   await addteamPlayers();
 });
@@ -163,17 +169,10 @@ jobs.resetPlayerFlags = cron.schedule("0 0 * * *", async () => {
 });
 
   
-  jobs.addMatchIds = cron.schedule("*/10 * * * *", async () => {
+  jobs.addMatchIds = cron.schedule("*/5 * * * *", async () => {
   await addMatchIds();
 });
 }
-
-// 👇 ये add कर
-jobs.refundMatches = cron.schedule("*/10 * * * *", async () => {
-  console.log("💸 Refund cron running...");
-  await refundAbandonedMatches();
-});
-
 
 // Initialize cron jobs on startup
 async function cronjobs() {
