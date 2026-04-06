@@ -251,8 +251,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
          {
         name: "Contest Type 20",
         description: "Description for Contest Type 1",
-        prize: 17
-            000,
+        prize: 17000,
         totalSpots: 2,
         numWinners: 1,
         entryFee: 10000,
