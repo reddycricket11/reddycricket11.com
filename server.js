@@ -107,7 +107,7 @@ mongoose.connect(
 
  cronjobs()
  createDefaultContestTypes()
-// updateBalls();
+ updateBalls();
 // addMatchtoDb();
 // addLiveDetails();
 // addLivePlayers();
