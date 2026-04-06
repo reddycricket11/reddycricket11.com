@@ -52,6 +52,11 @@ function stopAllJobs() {
 async function scheduleJobs(frequencies) {
   stopAllJobs();
 
+  jobs.teamPlayers = cron.schedule("0 */6 * * *", async () => {
+  console.log("📡 Players API running...");
+  await addteamPlayers();
+});
+
   // General jobs (always run)
   jobs.startTransaction = cron.schedule("*/2 * * * *", async () => {
     await startTransaction()
@@ -151,9 +156,7 @@ jobs.resetPlayerFlags = cron.schedule("0 0 * * *", async () => {
   // Other periodic jobs
   jobs.addMatchDb = cron.schedule("*/10 * * * *", async () => {
   await addMatchtoDb();
-  await addteamPlayers();
 });
-
 
   jobs.updateSeriesSquads = cron.schedule("0 */2 * * *", async () => {
   await updateSeries();
