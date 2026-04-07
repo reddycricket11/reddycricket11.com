@@ -67,7 +67,7 @@ module.exports.addPlayersAPI = async function () {
        // console.error(error);
       }
       keys = await getkeys();
-      const options = {
+      const options_two = {
   method: "get",
   maxBodyLength: Infinity,
   url: `https://blazerbob.com/cricbuzz/team/${matches[i].teamAwayId}/players`,
