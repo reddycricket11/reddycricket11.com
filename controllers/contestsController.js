@@ -135,7 +135,7 @@ router.get("/joincontest/:id", async (req, res) => {
   await user.save();
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
-  if (date < match.date) {
+  if (match.status === "upcoming" || match.status === "delayed") {
   if (user.wallet >= contest.price / contest.totalSpots) {
      
     const entryFee = contest.price / contest.totalSpots;
@@ -182,7 +182,7 @@ router.get("/reJoinCn/:id", async (req, res) => {
   const user = await User.findOne({ _id: req.body.uidfromtoken });
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
-  if (date < match.date&&contest) {
+  if ((match.status === "upcoming" || match.status === "delayed") && contest) {
       contest.teamsId=contest.teamsId.filter((t)=>!(t==req.query.oldTeamId));
       contest.teamsId.push(req.query.newTeamId);
       await contest.save();
@@ -217,7 +217,7 @@ router.post("/createContestType", async (req, res) => {
    const contestType = await ContestType.create(req.body);
 
     // Get all upcoming matches
-    const upcomingMatches = await Match.find({ date: { $gte: new Date() } });
+    const upcomingMatches = await Match.find({ status: { $in: ["upcoming", "delayed"] } });
 
     for (const match of upcomingMatches) {
       // Prepare prizeDetails
