@@ -23,7 +23,7 @@ const options = {
   }
 };
  
-getMatches();
+
   const promise = new Promise((resolve, reject) => {
     console.log("🔥 FUNCTION START");
     request(options, (error, response, body) => {
