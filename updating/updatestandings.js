@@ -14,10 +14,10 @@ module.exports.addTeamstandingstodbAPI = async function () {
     const keys = await getkeys();
     const options = {
       method: "GET",
-      url: `https://cricket-live-data.p.rapidapi.com/match/${matchId}`,
+      url: `https://blazerbob.com/cricbuzz/match/${matchId}`,
       headers: {
         "x-rapidapi-host": "cricket-live-data.p.rapidapi.com",
-        "x-rapidapi-key": keys,
+        "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
         useQueryString: true,
       },
     };
