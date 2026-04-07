@@ -194,15 +194,9 @@ mat.won = totalwon;
   const date = new Date();
   const startDate = date.toISOString();
   const umatchesdetails = await Matches.find({
-    $and: [
-      { matchId: { $in: [...user.matchIds] } },
-      {
-        date: {
-          $gte: new Date(startDate)
-        }
-      }
-    ]
-  });
+  matchId: { $in: [...user.matchIds] },
+  status: { $in: ["upcoming", "delayed"] }
+});
   //const usermatchesdetails = await Promise.all(usermatchespromises);
   for (let i = 0; i < umatchesdetails.length; i++) {
     teamAwayFlagUrl = flagURLs.findFlagUrlByCountryName(
@@ -452,13 +446,10 @@ router.get("/homeMatches", async (req, res) => {
   date.setDate(date.getDate() + 10);
   const endDate = date.toISOString();
   const matches = await Matches.find({
-    date: {
-      $gte: new Date(startDate),
-      $lt: new Date(endDate),
-    },
-    type: { $ne: "test" },
-    teamHomeName: { $ne: "tbc" }
-  });
+  status: { $in: ["upcoming", "delayed"] },
+  type: { $ne: "test" },
+  teamHomeName: { $ne: "tbc" }
+});
   const promises = matches.map((fruit) =>
     LiveMatches.findOne({ matchId: fruit.matchId })
   );
@@ -677,11 +668,8 @@ router.get("/home", async (req, res) => {
   date.setDate(date.getDate() + 10);
   const endDate = date.toISOString();
   const matches = await Matches.find({
-    date: {
-      $gte: new Date(startDate),
-      $lt: new Date(endDate),
-    },
-  });
+  status: { $in: ["upcoming", "delayed"] }
+});
   const upcomingMatches = {
     results: [],
   };
