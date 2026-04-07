@@ -29,15 +29,15 @@ module.exports.addPlayersAPI = async function () {
   matches[i].teamAwayId
 ) {
       console.log(matches[i]?.teamHomeId, 'founde matches')
-      const options = {
-        method: "get",
-        url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/team/${matches[i].teamHomeId}/players`,
-        headers: {
-          "x-apihub-key": 'Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56',
-          "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-          "x-apihub-endpoint": "2b298a5d-fb51-4e29-aa15-c5385291fcd8",
-        },
-      };
+     
+     const options = {
+  method: "get",
+  maxBodyLength: Infinity,
+  url: "https://blazerbob.com/cricbuzz/team/${matches[i].teamHomeId}/players",
+  headers: {
+    "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
+  },
+};
 
       try {
         await delay(1000);
