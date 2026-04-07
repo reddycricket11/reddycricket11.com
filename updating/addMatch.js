@@ -16,26 +16,17 @@ module.exports.addMatchtoDb = async function () {
 
   const obj = { results: [] };
 
- const axios = require("axios");
+   const options = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "https://blazerbob.com/cricbuzz/matches/upcoming",
+    headers: {
+      "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020"
+    },
+  };
 
-let s;
-
-try {
-  const response = await axios.get(
-    "https://blazerbob.com/cricbuzz/matches/upcoming",
-    {
-      headers: {
-        "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020"
-      }
-    }
-  );
-
-  s = response.data;
-
-} catch (err) {
-  console.log("❌ API Error:", err.message);
-  return;
-}
+  const promise = new Promise((resolve, reject) => {
+    request(options, (error, response, body) => {
       if (error) return reject(error);
       try {
         resolve(JSON.parse(body));
