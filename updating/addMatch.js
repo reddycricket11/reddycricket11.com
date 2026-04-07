@@ -1,4 +1,5 @@
-
+const axios = require("axios");
+const https = require("https");
 const Match = require("../models/match");
 const Contest = require("../models/contest");
 const MatchLiveDetails = require("../models/matchlive");
@@ -16,7 +17,9 @@ module.exports.addMatchtoDb = async function () {
 
   const obj = { results: [] };
 
- const axios = require("axios");
+ const agent = new https.Agent({
+  family: 4, // 🔥 FORCE IPv4 (IMPORTANT)
+});
 
 let s;
 
@@ -27,13 +30,18 @@ try {
       headers: {
         "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
       },
+      httpsAgent: agent,
+      timeout: 10000,
     }
   );
-   s = response.data.data || response.data;
-  // 🔥 ADD THIS LINE
-console.log("API DATA:", JSON.stringify(s, null, 2));
+
+  // ✅ data सही तरह से लो
+  s = response.data;
+
+  console.log("✅ API WORKING, matches:", s?.typeMatches?.length);
+
 } catch (err) {
-  console.log("API Error:", err.message);
+  console.log("❌ API Error:", err.message);
   return;
 }
 
