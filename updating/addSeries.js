@@ -7,7 +7,7 @@ const Series = require("../models/series");
 const API_CONFIG = {
   baseURL: "https://blazerbob.com/cricbuzz",
   headers: {
-     "x-auth-user": process.env.BLAZER_API_KEY,
+      "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
   },
 };
 
