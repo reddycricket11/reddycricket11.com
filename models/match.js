@@ -193,7 +193,7 @@ const matchSchema = new mongoose.Schema(
     // 🔥 ADD THIS
 status: {
   type: String,
-  enum: ["upcoming", "live", "completed"],
+  enum: ["upcoming", "delayed", "live", "completed", "cancelled"]
   default: "upcoming"
 },
 
