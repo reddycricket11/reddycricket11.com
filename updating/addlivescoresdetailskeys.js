@@ -10,7 +10,7 @@ const util = require('util');
 const { createVsImage, createResultImage } = require("../utils/generateTweetImage");
 const { sendTweetWithImage } = require("../utils/sendTweet");
 const { generateMatchHashtags, makeRequest, ensureSingleActiveKey } = require("../utils/helpers");
-//const { addLivecommentaryMongo } = require("./addCommentaryMongo");
+const { addLivecommentaryMongo } = require("./addCommentaryMongo");
 const requestPromise = util.promisify(require('request'));
 
 function delay(ms) {
@@ -99,11 +99,9 @@ module.exports.addLivescoresDetailsCustom = async function (format) {
         const options = {
           method: 'get',
    maxBodyLength: Infinity,
-   url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${matchId}/scorecard`,
+   url: `https://blazerbob.com/cricbuzz/match/${matchId}/scorecard`,
    headers: { 
-      'x-apihub-key': 'Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56', 
-      'x-apihub-host': 'Cricbuzz-Official-Cricket-API.allthingsdev.co', 
-      'x-apihub-endpoint': '5f260335-c228-4005-9eec-318200ca48d6'
+      "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
           },
         };
 
