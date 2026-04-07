@@ -37,7 +37,7 @@ const mailOptions = {
 
 //const db = getFirestore();
 // Add a new document with a generated id.
-//module.exports.addLivecommentaryCustom = async function addcommentry(format) {
+module.exports.addLivecommentaryCustom = async function addcommentry(format) {
     try {
         // await Series.updateMany({}, { $set: { importance: "medium" } })
         let date = new Date();
@@ -110,21 +110,17 @@ const mailOptions = {
                 const options = {
                     method: "GET",
   maxBodyLength: Infinity,
-  url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${m[i].matchId}/commentary`,
+  url: `https://blazerbob.com/cricbuzz/match/${m[i].matchId}/commentary`,
   headers: {
-    "x-apihub-key": "Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56",
-    "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-    "x-apihub-endpoint": "8cb69a0f-bcaa-45b5-a016-229a2e7594f6"
+    "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
   }
 };
                 const options2 = {
                    method: "GET",
   maxBodyLength: Infinity,
-  url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${m[i].matchId}/commentary`,
+  url: `https://blazerbob.com/cricbuzz/match/${m[i].matchId}/commentary`,
   headers: {
-    "x-apihub-key": "Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56",
-    "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-    "x-apihub-endpoint": "8cb69a0f-bcaa-45b5-a016-229a2e7594f6"
+    "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
   }
 };
                 try {
