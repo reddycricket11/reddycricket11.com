@@ -35,7 +35,7 @@ try {
   return;
 }
 
-  })();
+  
       if (!s?.typeMatches) return;
 
       for (const se of s.typeMatches) {
@@ -171,5 +171,5 @@ try {
           console.log("❌ Error:", err.message);
         }
       }
-    })();
+    
 };
