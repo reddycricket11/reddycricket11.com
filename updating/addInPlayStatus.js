@@ -86,11 +86,9 @@ module.exports.addInPlayStatus = async function () {
             console.log(matchId, 'matchId')
             const options = {
                 method: "GET",
-                url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${matchId}/commentary`,
+                url: `https://blazerbob.com/cricbuzz/match/${matchId}/commentary`,
             headers: { 
-      'x-apihub-key': 'Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56', 
-      'x-apihub-host': 'Cricbuzz-Official-Cricket-API.allthingsdev.co', 
-      'x-apihub-endpoint': '8cb69a0f-bcaa-45b5-a016-229a2e7594f6'
+      "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
    }
 };
             await delay(2000);
