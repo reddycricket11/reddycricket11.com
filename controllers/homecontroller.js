@@ -195,7 +195,6 @@ mat.won = totalwon;
   const startDate = date.toISOString();
   const umatchesdetails = await Matches.find({
   matchId: { $in: [...user.matchIds] },
-  status: { $in: ["upcoming", "delayed"] }
 });
   //const usermatchesdetails = await Promise.all(usermatchespromises);
   for (let i = 0; i < umatchesdetails.length; i++) {
@@ -212,6 +211,19 @@ mat.won = totalwon;
       teamHomeFlagUrl = getflags.getflag(umatchesdetails[i].teamHomeName);
     }
     const match = umatchesdetails[i];
+    const liveData = allusermatchesdetails.find(
+  (m) => m.matchId == match.matchId
+);
+
+// ❌ अगर match completed है → skip
+if (liveData?.result === "Complete") {
+  continue;
+}
+
+// ❌ अगर match live है → skip
+if (liveData?.result === "In Progress") {
+  continue;
+}
     const mat = {
       match_title: match.matchTitle,
       home: {
