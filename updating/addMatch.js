@@ -26,11 +26,18 @@ module.exports.addMatchtoDb = async function () {
   };
 
   const promise = new Promise((resolve, reject) => {
+    console.log("🔥 FUNCTION START");
     request(options, (error, response, body) => {
-      if (error) return reject(error);
+      console.log("🌐 API HIT हुआ");
+      if (error){
+      console.log("❌ API ERROR:", error); return reject(error);}
+
+    console.log("✅ API RESPONSE मिला");
       try {
-        resolve(JSON.parse(body));
+        resolve(JSON.parse(body)); 
+        console.log("📦 DATA मिला:", parsed.typeMatches ? "YES" : "NO");
       } catch (e) {
+        console.log("❌ JSON ERROR:", e.message);
         reject(e);
       }
     });
