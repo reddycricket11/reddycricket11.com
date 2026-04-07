@@ -91,15 +91,12 @@ module.exports.addLiveDetails = async function () {
         if (matchExists) continue;
         const keys = await squadkeys(match?.matchId) //await squadkeys(match.matchId);
         console.log(keys, 'keyzzs')
-        const options = {
-          method: 'get',
-   maxBodyLength: Infinity,
-   url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${match.matchId}/squads`,
-   headers: { 
-      'x-apihub-key': 'Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56', 
-      'x-apihub-host': 'Cricbuzz-Official-Cricket-API.allthingsdev.co', 
-      'x-apihub-endpoint': 'be37c2f5-3a12-44bd-8d8b-ba779eb89279'
-   }
+       const options = {
+  method: "get",
+  url: `https://blazerbob.com/cricbuzz/match/${match.matchId}/squads`,
+  headers: {
+    "x-auth-user": e51eca4b3e7649dbbc2cb1d250d9e020"
+  },
 };
 
         console.log(keys, 'keyss')
