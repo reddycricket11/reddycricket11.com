@@ -41,10 +41,12 @@ module.exports.addMatchtoDb = async function () {
       if (!s?.typeMatches) return;
 
       for (const se of s.typeMatches) {
+         const matchType = se.matchType; // 🔥 IMPORTANT
         for (const k of se.seriesMatches || []) {
           if (k?.seriesAdWrapper?.matches) {
             for (const f of k.seriesAdWrapper.matches) {
               if (f?.matchInfo) {
+                f.matchInfo.matchType = matchType; //
                 obj.results.push(f.matchInfo);
               }
             }
