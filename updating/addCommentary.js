@@ -33,7 +33,7 @@ const mailOptions = {
 
 //const db = getFirestore();
 // Add a new document with a generated id.
-//module.exports.addLivecommentary = async function addcommentry() {
+module.exports.addLivecommentary = async function addcommentry() {
   try {
     let date = new Date();
     let allMatches = [];
@@ -82,11 +82,9 @@ const mailOptions = {
         const options = {
          method: "GET",
       maxBodyLength: Infinity,
-      url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${m[i].matchId}/commentary`,
+      url: `https://blazerbob.com/cricbuzz/match/${m[i].matchId}/commentary`,
       headers: {
-        "x-apihub-key": "Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56",
-        "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-        "x-apihub-endpoint": "8cb69a0f-bcaa-45b5-a016-229a2e7594f6"
+        "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
       }
     };
         try {
