@@ -1,4 +1,4 @@
-const axios = require("axios");
+const request = require("request");
 const Match = require("../models/match");
 const Contest = require("../models/contest");
 const MatchLiveDetails = require("../models/matchlive");
@@ -15,49 +15,38 @@ module.exports.addMatchtoDb = async function () {
   console.log("add match");
 
   const obj = { results: [] };
-console.log("🔥 API CALL START");
 
-let s;
+  const options = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/matches/upcoming",
+    headers: {
+      "x-apihub-key": process.env.CRICBUZZ_KEY,
+      "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
+      "x-apihub-endpoint": "1943a818-98e9-48ea-8d1c-1554e116ef44",
+    },
+  };
 
-try {
-  const response = await axios.get(
-    "https://blazerbob.com/cricbuzz/matches/upcoming",
-    {
-      headers: {
-        "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
-      },
-      timeout: 10000,
-    }
-  );
+  const promise = new Promise((resolve, reject) => {
+    request(options, (error, response, body) => {
+      if (error) return reject(error);
+      try {
+        resolve(JSON.parse(body));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
 
-  console.log("🌐 API HIT SUCCESS");
+  promise
+    .then(async (s) => {
+      if (!s?.typeMatches) return;
 
-  s = response.data;
-
-  console.log(
-    "📦 DATA:",
-    s?.typeMatches ? "MATCHES FOUND ✅" : "NO MATCHES ❌"
-  );
- } catch (err) {
-  console.log("❌ ERROR:", err.message);
-}
- // 🔥 IMPORTANT CHECK
-  if (!s || !s.typeMatches) {
-    console.log("❌ No matches found");
-    return;
-  }
-
-  // 🔥 LOOP START
-  for (const se of s.typeMatches) {
-    const matchType = se.matchType.toLowerCase(); // ✅ FIX
-    
       for (const se of s.typeMatches) {
-         const matchType = se.matchType; // 🔥 IMPORTANT
         for (const k of se.seriesMatches || []) {
           if (k?.seriesAdWrapper?.matches) {
             for (const f of k.seriesAdWrapper.matches) {
               if (f?.matchInfo) {
-                f.matchInfo.matchType = matchType; //
                 obj.results.push(f.matchInfo);
               }
             }
@@ -164,15 +153,14 @@ try {
               }));
 
               const contest = await Contest.create({
-  entryFee: contestTypes[k].entryFee, 
-  totalSpots: contestTypes[k].totalSpots,
-  spotsLeft: contestTypes[k].totalSpots,
-  matchId: matchId,
-  prizeDetails,
-  numWinners: contestTypes[k].numWinners,
- // 🔥 FIX: price सही बनाओ
-  price: contestTypes[k].entryFee * contestTypes[k].totalSpots,
-});
+                price: contestTypes[k].prize,
+                totalSpots: contestTypes[k].totalSpots,
+                spotsLeft: contestTypes[k].totalSpots,
+                matchId: matchId,
+                prizeDetails,
+                numWinners: contestTypes[k].numWinners,
+                entryFee: contestTypes[k].entryFee,
+              });
 
               match1.contestId.push(contest._id);
             }
@@ -187,4 +175,8 @@ try {
           console.log("❌ Error:", err.message);
         }
       }
+    })
+    .catch((err) => {
+      console.log("API Error:", err);
+    });
 };
