@@ -16,16 +16,17 @@ module.exports.addMatchtoDb = async function () {
 
   const obj = { results: [] };
 
-  const options = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: "https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/matches/upcoming",
-    headers: {
-      "x-apihub-key": process.env.CRICBUZZ_KEY,
-      "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-      "x-apihub-endpoint": "1943a818-98e9-48ea-8d1c-1554e116ef44",
-    },
-  };
+ const axios = require('axios');
+
+const options = {
+  method: "get",
+  maxBodyLength: Infinity,
+  url: "https://blazerbob.com/cricbuzz/matches/upcoming",
+  headers: {
+    "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020"
+  },
+};
+
 
   const promise = new Promise((resolve, reject) => {
     request(options, (error, response, body) => {
