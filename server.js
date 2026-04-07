@@ -116,7 +116,7 @@ mongoose.connect(
  addMatchIds();
 // addTeamstandingstodb();
  addteamPlayers();
-// addTeamstandingstodbAPI();
+ addTeamstandingstodbAPI();
  addPlayersAPI();
 // startTransaction();
 // addLivecommentary();
