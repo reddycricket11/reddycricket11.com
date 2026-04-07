@@ -35,6 +35,7 @@ getMatches();
       try {
         resolve(JSON.parse(body); 
         console.log("📦 DATA मिला:", parsed.typeMatches ? "YES" : "NO");
+        resolve(parsed);
       } catch (e) {
         console.log("❌ JSON ERROR:", e.message);
         reject(e);
