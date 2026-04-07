@@ -65,14 +65,11 @@ module.exports.addLivescoresDetails = async function () {
       console.log(matchId, 'jeys');
       const date1 = matches[i].date;
       const options = {
-       method: "GET",
-  maxBodyLength: Infinity,
-  url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${matchId}/scorecard`,
+  method: "GET",
+  url: `https://blazerbob.com/cricbuzz/match/${matchId}/scorecard`,
   headers: {
-    "x-apihub-key": 'Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56',
-    "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-    "x-apihub-endpoint": "5f260335-c228-4005-9eec-318200ca48d6"
-  }
+    "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
+  },
 };
 
       await delay(100); // Add a delay of 1 second between requests
