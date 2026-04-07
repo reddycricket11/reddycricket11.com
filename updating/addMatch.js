@@ -1,5 +1,4 @@
-const axios = require("axios");
-const https = require("https");
+const request = require("request");
 const Match = require("../models/match");
 const Contest = require("../models/contest");
 const MatchLiveDetails = require("../models/matchlive");
@@ -17,35 +16,28 @@ module.exports.addMatchtoDb = async function () {
 
   const obj = { results: [] };
 
- const agent = new https.Agent({
-  family: 4, // 🔥 FORCE IPv4 (IMPORTANT)
-});
+  const options = {
+  method: "get",
+  maxBodyLength: Infinity,
+  url: "https://blazerbob.com/cricbuzz/matches/upcoming",
+  headers: {
+    "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
+  },
+};
 
-let s;
+  const promise = new Promise((resolve, reject) => {
+    request(options, (error, response, body) => {
+      if (error) return reject(error);
+      try {
+        resolve(JSON.parse(body));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
 
-try {
-  const response = await axios.get(
-    "https://blazerbob.com/cricbuzz/matches/upcoming",
-    {
-      headers: {
-        "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
-      },
-      httpsAgent: agent,
-      timeout: 10000,
-    }
-  );
-
-  // ✅ data सही तरह से लो
-  s = response.data;
-
-  console.log("✅ API WORKING, matches:", s?.typeMatches?.length);
-
-} catch (err) {
-  console.log("❌ API Error:", err.message);
-  return;
-}
-
-  
+  promise
+    .then(async (s) => {
       if (!s?.typeMatches) return;
 
       for (const se of s.typeMatches) {
@@ -85,7 +77,7 @@ try {
               seriesId: data.seriesId,
               name: data.seriesName,
               type:
-                data.matchType?.toLowerCase() === "league"
+                data.matchType === "league"
                   ? "league"
                   : data.matchType === "domestic"
                   ? "domestic"
@@ -181,5 +173,8 @@ try {
           console.log("❌ Error:", err.message);
         }
       }
-    
+    })
+    .catch((err) => {
+      console.log("API Error:", err);
+    });
 };
