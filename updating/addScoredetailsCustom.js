@@ -62,7 +62,7 @@ module.exports.addLivescoresDetailsCustomfs = async function (format) {
             await delay(100);
             const res = await fetch(apiUrl, {
                 headers: {
-                    "x-auth-user": process.env.BLAZER_API_KEY,
+                     "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
     }
 });
             const s = await res.json();
