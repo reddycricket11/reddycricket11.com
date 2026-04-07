@@ -1210,6 +1210,11 @@ router.get("/update_live_scores/:matchId", async (req, res) => {
                         );
                         if (result == "Complete") {
                             console.log(title_fi, 'i')
+                             // ✅ MATCH STATUS FIX
+  await Match.updateOne(
+    { matchId: matchId },
+    { status: "completed" }
+  );
                             let winner = runs_fi > runs_si ? title_fi : title_si;
                             let tweetText = `Lineups Out: ${matches[i].teamHomeName} vs ${match.teamAwayName}\nThe lineups for ${matches[i].teamHomeName} and ${matches[i].teamAwayName} are now available. Check out the details!
                        https://www.cricbuzz.com/live-cricket-scores/${match?.matchId} \n${generateMatchHashtags(matches[i].teamHomeCode, matches[i].teamAwayCode, matches[i].matchTitle)}`
