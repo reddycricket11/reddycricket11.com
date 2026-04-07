@@ -1,4 +1,4 @@
-const request = require("request");
+const axios = require("axios");
 const Match = require("../models/match");
 const Contest = require("../models/contest");
 const MatchLiveDetails = require("../models/matchlive");
@@ -15,38 +15,32 @@ module.exports.addMatchtoDb = async function () {
   console.log("add match");
 
   const obj = { results: [] };
-const options = {
-  method: "GET",
-  url: "https://blazerbob.com/cricbuzz/matches/upcoming",
-  headers: {
-    "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020" // Postman वाला key डालो
-  }
-};
- 
+console.log("🔥 API CALL START");
 
-  const promise = new Promise((resolve, reject) => {
-    console.log("🔥 FUNCTION START");
-    request(options, (error, response, body) => {
-      console.log("🌐 API HIT हुआ");
-      if (error){
-      console.log("❌ API ERROR:", error); return reject(error);}
+let s;
 
-    console.log("✅ API RESPONSE मिला");
-      try {
-        const parsed = JSON.parse(body);
-console.log("📦 DATA मिला:", parsed.typeMatches ? "YES" : "NO");
-resolve(parsed);
-        
-      } catch (e) {
-        console.log("❌ JSON ERROR:", e.message);
-        reject(e);
-      }
-    });
-  });
+try {
+  const response = await axios.get(
+    "https://blazerbob.com/cricbuzz/matches/upcoming",
+    {
+      headers: {
+        "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
+      },
+      timeout: 10000,
+    }
+  );
 
-  promise
-    .then(async (s) => {
-      if (!s?.typeMatches) return;
+  console.log("🌐 API HIT SUCCESS");
+
+  s = response.data;
+
+  console.log(
+    "📦 DATA:",
+    s?.typeMatches ? "MATCHES FOUND ✅" : "NO MATCHES ❌"
+  );
+ } catch (err) {
+  console.log("❌ ERROR:", err.message);
+}
 
       for (const se of s.typeMatches) {
          const matchType = se.matchType; // 🔥 IMPORTANT
