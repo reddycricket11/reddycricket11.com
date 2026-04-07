@@ -1,4 +1,4 @@
-const request = require("request");
+
 const Match = require("../models/match");
 const Contest = require("../models/contest");
 const MatchLiveDetails = require("../models/matchlive");
@@ -16,30 +16,21 @@ module.exports.addMatchtoDb = async function () {
 
   const obj = { results: [] };
 
-  const options = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: "https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/matches/upcoming",
-    headers: {
-      "x-apihub-key": process.env.CRICBUZZ_KEY,
-      "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-      "x-apihub-endpoint": "1943a818-98e9-48ea-8d1c-1554e116ef44",
-    },
-  };
+ const axios = require("axios");
 
-  const promise = new Promise((resolve, reject) => {
-    request(options, (error, response, body) => {
-      if (error) return reject(error);
-      try {
-        resolve(JSON.parse(body));
-      } catch (e) {
-        reject(e);
-      }
-    });
-  });
+let s;
 
-  promise
-    .then(async (s) => {
+try {
+  const response = await axios.get(
+    "https://blazerbob.com/cricbuzz/matches/upcoming"
+  );
+  s = response.data;
+} catch (err) {
+  console.log("API Error:", err.message);
+  return;
+}
+
+  (async () => {
       if (!s?.typeMatches) return;
 
       for (const se of s.typeMatches) {
@@ -79,7 +70,7 @@ module.exports.addMatchtoDb = async function () {
               seriesId: data.seriesId,
               name: data.seriesName,
               type:
-                data.matchType === "league"
+                data.matchType?.toLowerCase() === "league"
                   ? "league"
                   : data.matchType === "domestic"
                   ? "domestic"
@@ -175,8 +166,5 @@ module.exports.addMatchtoDb = async function () {
           console.log("❌ Error:", err.message);
         }
       }
-    })
-    .catch((err) => {
-      console.log("API Error:", err);
-    });
+    })();
 };
