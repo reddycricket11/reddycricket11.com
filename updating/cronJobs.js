@@ -154,7 +154,7 @@ jobs.resetPlayerFlags = cron.schedule("0 0 * * *", async () => {
   }
 
   // Other periodic jobs
-  jobs.addMatchDb = cron.schedule("*/10 * * * *", async () => {
+  jobs.addMatchDb = cron.schedule("*/10 * * * * *", async () => {
   await addMatchtoDb();
 });
 
