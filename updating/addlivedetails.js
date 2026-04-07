@@ -95,7 +95,7 @@ module.exports.addLiveDetails = async function () {
   method: "get",
   url: `https://blazerbob.com/cricbuzz/match/${match.matchId}/squads`,
   headers: {
-    "x-auth-user": e51eca4b3e7649dbbc2cb1d250d9e020"
+    "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
   },
 };
 
