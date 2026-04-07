@@ -41,7 +41,16 @@ try {
  } catch (err) {
   console.log("❌ ERROR:", err.message);
 }
+ // 🔥 IMPORTANT CHECK
+  if (!s || !s.typeMatches) {
+    console.log("❌ No matches found");
+    return;
+  }
 
+  // 🔥 LOOP START
+  for (const se of s.typeMatches) {
+    const matchType = se.matchType.toLowerCase(); // ✅ FIX
+    
       for (const se of s.typeMatches) {
          const matchType = se.matchType; // 🔥 IMPORTANT
         for (const k of se.seriesMatches || []) {
