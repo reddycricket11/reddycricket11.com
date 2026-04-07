@@ -108,26 +108,26 @@ mongoose.connect(
  cronjobs()
  createDefaultContestTypes()
  updateBalls();
-// addMatchtoDb();
-// addLiveDetails();
+ addMatchtoDb();
+ addLiveDetails();
 // addLivePlayers();
-// addLivescoresDetails();
+ addLivescoresDetails();
 //refundAbandonedMatches();
-// addMatchIds();
+ addMatchIds();
 // addTeamstandingstodb();
-// addteamPlayers();
+ addteamPlayers();
 // addTeamstandingstodbAPI();
-// addPlayersAPI();
+ addPlayersAPI();
 // startTransaction();
 // addLivecommentary();
 // addLivecommentaryCustom('odi')
 // addLivescoresDetailsCustom('t20')
 // addLivescoresDetailsCustomfs('t20')
-// updateBalls();
-//addInPlayStatus();
+ updateBalls();
+addInPlayStatus();
 // startCryptoTransaction();
-// updateSeries()
-// updateSquads()
+ updateSeries()
+ updateSquads()
 // generateShotTypes()
 // fetchAndSaveTeams();
 // addMatchesForAllCurrentSeries()
