@@ -123,23 +123,37 @@ module.exports.addMatchtoDb = async function () {
           match1.enddate = new Date(Number(data.endDate));
           const now = new Date();
 
-// Default
-match1.status = "upcoming";
+// 🔥 FINAL SAFE STATUS LOGIC
 
-// अगर API में status मिले तो use करो
-if (data.state === "In Progress") {
+// अगर पहले से completed है → कभी change मत कर
+if (match?.status === "completed") {
+  match1.status = "completed";
+}
+
+// API अगर live दे
+else if (data.state === "In Progress") {
   match1.status = "live";
 }
+
+// API अगर complete दे (rare case)
 else if (data.state === "Complete") {
   match1.status = "completed";
 }
-else {
-  // Time based fallback (IMPORTANT)
-  if (now > match1.date && now < match1.enddate) {
-    match1.status = "delayed"; // toss नहीं हुआ / delay
-  }
+
+// Delay logic (SAFE)
+else if (
+  match1.status !== "completed" &&
+  match1.status !== "live" &&
+  now > match1.date &&
+  now < match1.enddate
+) {
+  match1.status = "delayed";
 }
 
+// New match
+else if (!match) {
+  match1.status = "upcoming";
+}
           const teamHomeFlagUrl =
             flagURLs.findFlagUrlByCountryName(
               data.team1.teamName.toLowerCase()
