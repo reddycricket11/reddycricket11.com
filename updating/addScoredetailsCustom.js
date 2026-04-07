@@ -57,7 +57,7 @@ module.exports.addLivescoresDetailsCustomfs = async function (format) {
             continue;
         }
         const apiUrl = `https://blazerbob.com/cricbuzz/match/${matchId}/scorecard`,
-        await getkeys(matchId)
+        const keys = await getkeys(); 
         try {
             await delay(100);
             const res = await fetch(apiUrl, {
