@@ -34,7 +34,7 @@ module.exports.addMatchtoDb = async function () {
 
     console.log("✅ API RESPONSE मिला");
       try {
-        resolve(JSON.parse(body)); 
+        resolve(JSON.parse(body); 
         console.log("📦 DATA मिला:", parsed.typeMatches ? "YES" : "NO");
       } catch (e) {
         console.log("❌ JSON ERROR:", e.message);
