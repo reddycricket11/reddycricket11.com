@@ -29,7 +29,9 @@ try {
       },
     }
   );
-  s = response.data;
+   s = response.data.data || response.data;
+  // 🔥 ADD THIS LINE
+console.log("API DATA:", JSON.stringify(s, null, 2));
 } catch (err) {
   console.log("API Error:", err.message);
   return;
