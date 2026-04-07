@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const MatchLiveDetails = require("../models/matchlive");
 const Matches = require("../models/match");
-const HARDCODED_KEY = "Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56";
+const HARDCODED_KEY = "e51eca4b3e7649dbbc2cb1d250d9e020",
 const Squad = require("../models/squad");
 const fetch = require("node-fetch");
 // const { getkeys } = require("../utils/crickeys"); // ❌ key DB se nahi leni
@@ -42,12 +42,10 @@ module.exports.updateSquads = async function () {
 
       // ✅ SINGLE + CORRECT API CALL (HARDCODED KEY)
       const response = await axios.get(
-        `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/series/${seriesId}/squads`,
+        `https://blazerbob.com/cricbuzz/series/${seriesId}/squads`,
         {
           headers: {
-            "x-apihub-key": HARDCODED_KEY,
-            "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-            "x-apihub-endpoint": "be37c2f5-3a12-44bd-8d8b-ba779eb89279",
+           "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
           }
         }
       );
