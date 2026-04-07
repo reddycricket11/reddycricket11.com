@@ -16,15 +16,39 @@ module.exports.addMatchtoDb = async function () {
 
   const obj = { results: [] };
 
-   const options = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: "https://blazerbob.com/cricbuzz/matches/upcoming",
-    headers: {
-      "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020"
-    },
-  };
+  const axios = require("axios");
+const https = require("https");
 
+// 🔥 IPv4 force (important)
+require("dns").setDefaultResultOrder("ipv4first");
+
+const agent = new https.Agent({ family: 4 });
+
+async function getMatches() {
+  try {
+    console.log("🌐 API CALL START");
+
+    const response = await axios({
+      ...options,          // 🔥 options use यहाँ
+      httpsAgent: agent,  // IPv4 fix
+      timeout: 10000
+    });
+
+    console.log("✅ API RESPONSE मिला");
+
+    const data = response.data;
+
+    console.log("📦 DATA मिला:", data?.typeMatches ? "YES" : "NO");
+
+    // 👉 check data
+    console.log("Total types:", data.typeMatches.length);
+
+  } catch (err) {
+    console.log("❌ API ERROR:", err.message);
+  }
+}
+
+getMatches();
   const promise = new Promise((resolve, reject) => {
     console.log("🔥 FUNCTION START");
     request(options, (error, response, body) => {
