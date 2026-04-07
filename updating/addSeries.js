@@ -5,11 +5,9 @@ const Series = require("../models/series");
  * ✅ NEW CRICBUZZ OFFICIAL API CONFIG
  */
 const API_CONFIG = {
-  baseURL: "https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co",
+  baseURL: "https://blazerbob.com/cricbuzz",
   headers: {
-    "x-apihub-key": "Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56",
-    "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-    "x-apihub-endpoint": "661c6b89-b558-41fa-9553-d0aca64fcb6f",
+     "x-auth-user": process.env.BLAZER_API_KEY,
   },
 };
 
