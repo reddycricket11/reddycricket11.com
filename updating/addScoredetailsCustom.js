@@ -56,8 +56,8 @@ module.exports.addLivescoresDetailsCustomfs = async function (format) {
             console.log(`Match ${matchId} is not in play or already completed.`);
             continue;
         }
-        const apiUrl = `https://blazerbob.com/cricbuzz/match/${matchId}/scorecard`,
-        const keys = await getkeys(); 
+        const apiUrl = `https://blazerbob.com/cricbuzz/match/${matchId}/scorecard`;
+        await getkeys(matchId)
         try {
             await delay(100);
             const res = await fetch(apiUrl, {
