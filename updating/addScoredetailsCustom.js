@@ -56,15 +56,13 @@ module.exports.addLivescoresDetailsCustomfs = async function (format) {
             console.log(`Match ${matchId} is not in play or already completed.`);
             continue;
         }
-        const apiUrl = `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${matchId}/scorecard`;
+        const apiUrl = `https://blazerbob.com/cricbuzz/match/${matchId}/scorecard`,
         await getkeys(matchId)
         try {
             await delay(100);
             const res = await fetch(apiUrl, {
                 headers: {
-                   'x-apihub-key': 'Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56',
-        'x-apihub-host': 'Cricbuzz-Official-Cricket-API.allthingsdev.co',
-        'x-apihub-endpoint': '8cb69a0f-bcaa-45b5-a016-229a2e7594f6'
+                    "x-auth-user": process.env.BLAZER_API_KEY,
     }
 });
             const s = await res.json();
