@@ -6,21 +6,19 @@ const { getkeys } = require('../utils/crickeys');
 async function fetchSeriesByType(type) {
   const options = {
     method: 'GET',
-    hostname: 'cricbuzz-cricket.p.rapidapi.com',
+    hostname: 'https://blazerbob.com/cricbuzz',
     port: null,
     path: `/series/v1/${type}`, // Dynamically set the path based on the series type
     headers: {
-      'x-rapidapi-key': '3ddef92f6emsh8301b1a8e1fd478p15bb8bjsnd0bb5446cadc',
-      'x-rapidapi-host': 'cricbuzz-cricket.p.rapidapi.com',
+      "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
     },
   };
 
   try {
     const key=await getkeys()
-    const response = await axios.get(`https://cricbuzz-cricket.p.rapidapi.com/series/v1/archives/${type}?year=2014`, {
+    const response = await axios.get(`https://blazerbob.com/cricbuzz/series/v1/archives/${type}?year=2014`, {
       headers: {
-        'x-rapidapi-key': '3ddef92f6emsh8301b1a8e1fd478p15bb8bjsnd0bb5446cadc',
-        'x-rapidapi-host': 'cricbuzz-cricket.p.rapidapi.com',
+        "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
       },
     });
     return response.data.seriesMapProto;
