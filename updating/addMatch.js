@@ -22,7 +22,12 @@ let s;
 
 try {
   const response = await axios.get(
-    "https://blazerbob.com/cricbuzz/matches/upcoming"
+    "https://blazerbob.com/cricbuzz/matches/upcoming",
+    {
+      headers: {
+        "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
+      },
+    }
   );
   s = response.data;
 } catch (err) {
@@ -30,7 +35,7 @@ try {
   return;
 }
 
-  (async () => {
+  })();
       if (!s?.typeMatches) return;
 
       for (const se of s.typeMatches) {
