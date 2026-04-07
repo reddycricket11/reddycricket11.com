@@ -121,6 +121,24 @@ module.exports.addMatchtoDb = async function () {
 
           match1.date = new Date(Number(data.startDate));
           match1.enddate = new Date(Number(data.endDate));
+          const now = new Date();
+
+// Default
+match1.status = "upcoming";
+
+// अगर API में status मिले तो use करो
+if (data.state === "In Progress") {
+  match1.status = "live";
+}
+else if (data.state === "Complete") {
+  match1.status = "completed";
+}
+else {
+  // Time based fallback (IMPORTANT)
+  if (now > match1.date && now < match1.enddate) {
+    match1.status = "delayed"; // toss नहीं हुआ / delay
+  }
+}
 
           const teamHomeFlagUrl =
             flagURLs.findFlagUrlByCountryName(
