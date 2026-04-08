@@ -16,7 +16,8 @@ function findrank(id, arr) {
 }
 
 router.get("/getcontests/:id", async (req, res) => {
-  const contests = await Contest.find({ matchId: req.params.id });
+  const contests = await Contest.find({ matchId: req.params.id })
+    .sort({ order: 1 }); // 🔥 ADD THIS
   res.status(200).json({
     contests,
   });
@@ -151,6 +152,21 @@ if (user.totalAmountAdded > user.wallet) {
       contest.userIds.push(req.body.uidfromtoken);
       contest.teamsId.push(req.query.teamid);
       contest.spotsLeft -= 1;
+    // 🔥 AUTO CREATE SAME CONTEST
+if (contest.spotsLeft === 0) {
+  const newContest = new Contest({
+    price: contest.price,
+    totalSpots: contest.totalSpots,
+    spotsLeft: contest.totalSpots,
+    matchId: contest.matchId,
+    prizeDetails: contest.prizeDetails,
+    numWinners: contest.numWinners,
+    entryFee: contest.entryFee,
+    order: contest.order // ✅ SAME POSITION
+  });
+
+  await newContest.save();
+}
       await Transaction.create({
         userId: req.body.uidfromtoken,
         amount: entryFee ,
@@ -237,6 +253,7 @@ router.post("/createContestType", async (req, res) => {
         prizeDetails,
         numWinners: contestType.numWinners,
         entryFee: contestType.entryFee,
+        order: Date.now() // ✅ ADD
       });
 
       try {
