@@ -197,7 +197,6 @@ if (contest.spotsLeft === 0) {
         message: "can't join contest due to insufficient balance",
         success: false,
       });
-    }
   }
   else {
     res.status(400).json({
