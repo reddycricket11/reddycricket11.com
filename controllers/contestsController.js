@@ -191,20 +191,12 @@ if (user.totalAmountAdded > user.wallet) {
       res.status(200).json({
         contest,
       });
- } else {
-      res.status(400).json({
-        message: "can't join contest due to insufficient balance",
-        success: false,
-      });
-  }
-  }
-  else {
-    res.status(400).json({
-      message: "can't join contest, time's up",
-      success: false,
-    });
-  }
-});
+ if (user.wallet < entryFee) {
+  return res.status(400).json({
+    message: "can't join contest due to insufficient balance",
+    success: false,
+  });
+}
 
 router.get("/reJoinCn/:id", async (req, res) => {
   const contest = await Contest.findOne({ _id: req.params.id });
@@ -229,6 +221,7 @@ router.get("/reJoinCn/:id", async (req, res) => {
     });
   }
 });
+
 // Route to create a new contest type
 router.post("/cruateContestType", async (req, res) => {
   try {
