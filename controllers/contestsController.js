@@ -259,7 +259,7 @@ router.post("/createContestType", async (req, res) => {
         prizeDetails,
         numWinners: contestType.numWinners,
         entryFee: contestType.entryFee,
-        order: contest.order,
+        order: number // ✅ name based order
       });
 
       try {
