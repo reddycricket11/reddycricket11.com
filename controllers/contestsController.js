@@ -149,6 +149,14 @@ router.get("/joincontest/:id", async (req, res) => {
 
     // 🔥 SAFE ENTRY FEE (main fix)
 const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
+
+  if (user.wallet < entryFee) {
+  return res.status(400).json({
+    message: "can't join contest due to insufficient balance",
+    success: false,
+  });
+}
+});
     
   if (user.wallet >= entryFee) {
     user.wallet -= entryFee;
@@ -188,16 +196,8 @@ if (user.totalAmountAdded > user.wallet) {
       });
       await contest.save();
       await user.save();
-      res.status(200).json({
-        contest,
-      });
- if (user.wallet < entryFee) {
-  return res.status(400).json({
-    message: "can't join contest due to insufficient balance",
-    success: false,
-  });
-}
-});
+      res.status(200).json({ contest });
+    
 router.get("/reJoinCn/:id", async (req, res) => {
   const contest = await Contest.findOne({ _id: req.params.id });
   console.log(contest, "rejoin");
