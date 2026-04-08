@@ -139,7 +139,12 @@ router.get("/joincontest/:id", async (req, res) => {
   await user.save();
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
-  if (match.status === "upcoming" || match.status === "delayed") {
+  if (match.status !== "upcoming" && match.status !== "delayed") {
+  return res.status(400).json({
+    message: "Match already started",
+    success: false
+  });
+}
 
     // 🔥 SAFE ENTRY FEE (main fix)
 const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
