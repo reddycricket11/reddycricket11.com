@@ -32,7 +32,7 @@ const { startTransaction } = require("./updating/transaction.js");
 const { addMatchtoDb } = require("./updating/addMatch.js");
 const { addLivescoresDetails } = require("./updating/addlivescoresdetails.js");
 const { addLiveDetails } = require("./updating/addlivedetails.js");
-//const { addLivecommentary } = require("./updating/addCommentary.js");
+const { addLivecommentary } = require("./updating/addCommentary.js");
 const { addTeamstandingstodb } = require("./updating/updateteam.js");
 const { addTeamstandingstodbAPI } = require("./updating/updatestandings.js");
 const { addPlayersAPI } = require("./updating/addplayer.js");
@@ -46,7 +46,7 @@ const { createDefaultContestTypes } = require("./updating/createContestTypes.js"
 const { cronjobs } = require("./updating/cronJobs.js");
 const { startCryptoTransaction } = require("./updating/cryptoTransaction.js");
 const configRoutes = require("./controllers/configurationController.js");
-//const { addLivecommentaryCustom } = require("./updating/addCommentaryCustom.js");
+const { addLivecommentaryCustom } = require("./updating/addCommentaryCustom.js");
 const { addLivescoresDetailsCustomfs } = require("./updating/addScoredetailsCustom.js");
 const { addLivescoresDetailsCustom } = require("./updating/addlivescoresdetailskeys.js");
 const { updateSeries } = require("./updating/addSeries.js");
@@ -107,7 +107,7 @@ mongoose.connect(
 
  cronjobs()
  createDefaultContestTypes()
- updateBalls();
+// updateBalls();
  addMatchtoDb();
  addLiveDetails();
 // addLivePlayers();
@@ -123,7 +123,7 @@ mongoose.connect(
 // addLivecommentaryCustom('odi')
 // addLivescoresDetailsCustom('t20')
 // addLivescoresDetailsCustomfs('t20')
- updateBalls();
+// updateBalls();
 addInPlayStatus();
 // startCryptoTransaction();
  updateSeries()
