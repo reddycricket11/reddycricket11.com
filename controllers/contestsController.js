@@ -136,9 +136,9 @@ router.get("/joincontest/:id", async (req, res) => {
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
   if (match.status === "upcoming" || match.status === "delayed") {
-  if (user.wallet >= contest.price / contest.totalSpots) {
+  if (user.wallet >= contest.price) {
      
-    const entryFee = contest.price / contest.totalSpots;
+    const entryFee = contest.price;
     user.wallet -= entryFee;
 
 // ✅ MAGIC FIX
@@ -151,7 +151,7 @@ if (user.totalAmountAdded > user.wallet) {
       contest.spotsLeft -= 1;
       await Transaction.create({
         userId: req.body.uidfromtoken,
-        amount: contest.price / contest.totalSpots,
+        amount: contest.price ,
         action: "entry fee",
         status: "completed",
         transactionId: contest._id
