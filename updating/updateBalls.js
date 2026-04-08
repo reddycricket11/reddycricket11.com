@@ -63,7 +63,7 @@ module.exports.updateBalls = async function () {
                         let xyz = doc.data().commentary;
                         let fBalls = [];
                         let sBalls = [];
-                        // console.log(matchess[i].matchId, 'data')
+                         console.log(matchess[i].matchId, 'data')
                         let firstTeam = matchess[i].isHomeFirst ? matchess[i].teamHomeName : matchess[i].teamAwayName;
                         let secondTeam = !matchess[i].isHomeFirst ? matchess[i].teamHomeName : matchess[i].teamAwayName;;
                         for (let a = 0; a < xyz.length; a++) {
@@ -96,7 +96,7 @@ module.exports.updateBalls = async function () {
 
                                     const keyword = `${teamName}_${batsmanName}_${shotType}`;
 
-                                    //onst videoLink = await fuzzyMatchVideo(eventType, xyz[a]?.commText, xyz[a]) // your fuzzy logic to get video
+                                   // const videoLink = await fuzzyMatchVideo(eventType, xyz[a]?.commText, xyz[a]) // your fuzzy logic to get video
                                     const bowling_team = ((xyz?.[a]?.batTeamName.toLowerCase() == matchess[i].teamHomeCode?.toLowerCase())) ? matchess[i].teamAwayCode : matchess[i].teamHomeCode;
                                     const { videoLink, breakdown } = await fuzzyMatchVideo(clips, eventType, xyz[a]?.commText, xyz?.[a], bowling_team)
                                     console.log(videoLink, 'videolinked')
@@ -120,7 +120,7 @@ module.exports.updateBalls = async function () {
                                 updatedCommentary.push(xyz[a])
                             }
                         }
-                        //console.log(updatedCommentary, 'updated commentary')
+                        console.log(updatedCommentary, 'updated commentary')
                         const res = await commentaryRef.set(
                             {
                                 commentary: updatedCommentary,
@@ -129,7 +129,7 @@ module.exports.updateBalls = async function () {
                             },
                             { merge: true }
                         );
-                        {/*for (let a = 0; a <= 20; a++) {
+                        {for (let a = 0; a <= 20; a++) {
                             let overArray = '1 6 0 1 2 4'.split(' ');
                             for (let b = 0; b < 6; b++) {
                                 console.log((a - (5 - b)), 'fball number')
@@ -140,7 +140,7 @@ module.exports.updateBalls = async function () {
                                 sBalls.push({ ballNbr: parseInt(a * 6 - (5 - b)), runs: isNaN(overArray2[b]) ? 0 : parseInt(overArray2[b]), event: overArray2[b] })
                             }
 
-                        }*/}
+                        }}
                         let detail = await DetailScores.findOne({ matchId: m[i]?.matchId });
                         if (!detail) {
                             await DetailScores.create({
