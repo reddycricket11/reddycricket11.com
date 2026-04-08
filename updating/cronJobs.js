@@ -7,6 +7,7 @@ const { addLiveDetails } = require("./addlivedetails.js");
 const { addLivecommentary } = require("./addCommentary.js");
 const { addTeamstandingstodb } = require("./updateteam.js");
 const { addTeamstandingstodbAPI } = require("./updatestandings.js");
+const { refundUnfilledContest } = require("./refundUnfilledContest");
 const { addPlayersAPI } = require("./addplayer.js");
 const { addteamPlayers } = require("./teamcreatecontroller.js");
 const { addMatchIds } = require("./addMatchIds.js");
@@ -80,6 +81,11 @@ jobs.resetPlayerFlags = cron.schedule("0 0 * * *", async () => {
     await refundAbandonedMatches();
   });
 
+  // ✅ NEW: unfilled contest refund
+jobs.refundUnfilled = cron.schedule("*/1 * * * *", async () => {
+  console.log("💸 Unfilled Contest Refund running...");
+  await refundUnfilledContest();
+});
 
   // Source mode jobs
   if (isSource) {
