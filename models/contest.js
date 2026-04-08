@@ -85,11 +85,17 @@ order: {
       },
     ],
 
-    // ✅ REFUND FLAG (IMPORTANT)
-    refunded: {
+   refunded: {
       type: Boolean,
       default: false,
     },
+
+    // ✅ सही जगह यहाँ
+    isCancelled: {
+      type: Boolean,
+      default: false
+    }
+
   },
   {
     timestamps: true,
