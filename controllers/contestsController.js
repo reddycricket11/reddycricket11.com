@@ -87,7 +87,7 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
     const contestsArray = [];
     for (let i = 0; i < contests?.length; i++) {
       // ❌ cancelled contest skip
-const isCancelled = contests[i].isCancelled;
+     const isCancelled = contests[i].isCancelled;
       let arr = [];
       for (let j = 0; j < contests[i].teamsId.length; j++) {
         if (contests[i]?.teamsId[j]) {
@@ -162,9 +162,9 @@ if (user.totalAmountAdded > user.wallet) {
       contest.teamsId.push(req.query.teamid);
       contest.spotsLeft -= 1;
     // 🔥 AUTO CREATE SAME CONTEST
-if (contest.spotsLeft === 0) {
+    if (contest.spotsLeft === 0) {
    // ✅ old contest hide
-  contest.isFull = true;
+   contest.isFull = true;
   await contest.save(); // 🔥 IMPORTANT
   const newContest = new Contest({
     price: contest.price,
@@ -191,14 +191,12 @@ if (contest.spotsLeft === 0) {
       res.status(200).json({
         contest,
       });
-    }
-    }
-  else {
+ } else {
       res.status(400).json({
         message: "can't join contest due to insufficient balance",
         success: false,
       });
-  
+  }
   }
   else {
     res.status(400).json({
