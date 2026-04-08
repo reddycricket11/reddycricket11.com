@@ -10,6 +10,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 10,
+        order: 1,
         prizes: [
           { rank: 1, amount: 17 },
           { rank: 2, amount: 0 },
@@ -23,6 +24,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 20,
+            order: 2,
         prizes: [
           { rank: 1, amount: 34 },
           { rank: 2, amount: 0 },
@@ -36,6 +38,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 33,
+             order: 3,
         prizes: [
           { rank: 1, amount: 56 },
           { rank: 2, amount: 0 },
@@ -49,6 +52,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 50,
+            order: 4,
         prizes: [
           { rank: 1, amount: 85 },
           { rank: 2, amount: 0 },
@@ -62,6 +66,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 84,
+            order: 5,
         prizes: [
           { rank: 1, amount: 142 },
           { rank: 2, amount: 0 },
@@ -75,6 +80,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 100,
+            order: 6,
         prizes: [
           { rank: 1, amount: 170 },
           { rank: 2, amount: 0 },
@@ -88,6 +94,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 125,
+            order: 7,
         prizes: [
           { rank: 1, amount: 212 },
           { rank: 2, amount: 0 },
@@ -101,6 +108,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 250,
+            order: 8,
         prizes: [
           { rank: 1, amount: 425 },
           { rank: 2, amount: 0 },
@@ -114,6 +122,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 350,
+            order: 9,
         prizes: [
           { rank: 1, amount: 595 },
           { rank: 2, amount: 0 },
@@ -127,6 +136,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 470,
+             order: 10,
         prizes: [
           { rank: 1, amount: 799 },
           { rank: 2, amount: 0 },
@@ -140,6 +150,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 625,
+             order: 11,
         prizes: [
           { rank: 1, amount: 1062 },
           { rank: 2, amount: 0 },
@@ -153,6 +164,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 1000,
+            order: 12,
         prizes: [
           { rank: 1, amount: 1700 },
           { rank: 2, amount: 0 },
@@ -166,6 +178,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 1410,
+             order: 13,
         prizes: [
           { rank: 1, amount: 2397},
           { rank: 2, amount: 0 },
@@ -179,6 +192,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 1890,
+             order: 14,
         prizes: [
           { rank: 1, amount: 3213 },
           { rank: 2, amount: 0 },
@@ -192,6 +206,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 3150,
+             order: 15,
         prizes: [
           { rank: 1, amount: 5355 },
           { rank: 2, amount: 0 },
@@ -204,6 +219,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 4750,
+             order: 16,
         prizes: [
           { rank: 1, amount: 8075 },
           { rank: 2, amount: 0 },
@@ -217,6 +233,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 6250,
+             order: 17,
         prizes: [
           { rank: 1, amount: 10625 },
           { rank: 2, amount: 0 },
@@ -230,6 +247,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 7350,
+            order: 18,
         prizes: [
           { rank: 1, amount: 12495 },
           { rank: 2, amount: 0 },
@@ -242,6 +260,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 8995,
+             order: 19,
         prizes: [
           { rank: 1, amount: 14990 },
           { rank: 2, amount: 0 },
@@ -255,6 +274,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 2,
         numWinners: 1,
         entryFee: 10000,
+             order: 20,
         prizes: [
           { rank: 1, amount: 17000 },
           { rank: 2, amount: 0 },
@@ -268,6 +288,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 12,
+        order: 21,
         prizes: [
           { rank: 1, amount: 30 },
           { rank: 2, amount: 0 },
@@ -282,6 +303,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 17,
+          order: 22,
         prizes: [
           { rank: 1, amount: 43 },
           { rank: 2, amount: 0 },
@@ -296,6 +318,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 34,
+        order: 23,
         prizes: [
           { rank: 1, amount: 86 },
           { rank: 2, amount: 0 },
@@ -310,6 +333,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 68,
+        order: 24,
         prizes: [
           { rank: 1, amount: 174 },
           { rank: 2, amount: 0 },
@@ -324,6 +348,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 136,
+         order: 25,
         prizes: [
           { rank: 1, amount: 346 },
           { rank: 2, amount: 0 },
@@ -338,6 +363,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 272,
+         order: 26,
         prizes: [
           { rank: 1, amount: 693 },
           { rank: 2, amount: 0 },
@@ -352,6 +378,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 544,
+         order: 27,
         prizes: [
           { rank: 1, amount: 1377 },
           { rank: 2, amount: 0 },
@@ -366,6 +393,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 1088,
+         order: 28,
         prizes: [
           { rank: 1, amount: 2774 },
           { rank: 2, amount: 0 },
@@ -380,6 +408,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 2176,
+        order: 29,
         prizes: [
           { rank: 1, amount: 5548 },
           { rank: 2, amount: 0 },
@@ -394,6 +423,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 4325,
+        order: 30,
         prizes: [
           { rank: 1, amount: 11096 },
           { rank: 2, amount: 0 },
@@ -408,6 +438,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 8650,
+        order: 31,
         prizes: [
           { rank: 1, amount: 22055 },
           { rank: 2, amount: 0 },
@@ -422,6 +453,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 3,
         numWinners: 1,
         entryFee: 10000,
+        order: 32,
         prizes: [
           { rank: 1, amount: 25500 },
           { rank: 2, amount: 0 },
@@ -436,6 +468,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 4,
         numWinners: 2,
         entryFee: 10,
+        order: 33,
         prizes: [
           { rank: 1, amount: 20 },
           { rank: 2, amount: 16 },
@@ -451,6 +484,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 4,
         numWinners: 2,
         entryFee: 20,
+        order: 34,
         prizes: [
           { rank: 1, amount: 40 },
           { rank: 2, amount: 28 },
@@ -466,6 +500,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 4,
         numWinners: 2,
         entryFee: 40,
+        order: 35,
         prizes: [
           { rank: 1, amount: 80 },
           { rank: 2, amount: 56 },
@@ -481,6 +516,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 4,
         numWinners: 2,
         entryFee: 100,
+        order: 36,
         prizes: [
           { rank: 1, amount: 200 },
           { rank: 2, amount: 140 },
@@ -496,6 +532,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 4,
         numWinners: 2,
         entryFee: 200,
+        order: 37,
         prizes: [
           { rank: 1, amount: 450 },
           { rank: 2, amount: 230 },
@@ -511,6 +548,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 4,
         numWinners: 2,
         entryFee: 400,
+        order: 38,
         prizes: [
           { rank: 1, amount: 900 },
           { rank: 2, amount: 460 },
@@ -526,6 +564,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 4,
         numWinners: 2,
         entryFee: 800,
+        order: 39,
         prizes: [
           { rank: 1, amount: 1800 },
           { rank: 2, amount: 920 },
@@ -541,6 +580,7 @@ module.exports.createDefaultContestTypes = async function createDefaultContestTy
         totalSpots: 4,
         numWinners: 2,
         entryFee: 1500,
+        order: 40,
         prizes: [
           { rank: 1, amount: 4100 },
           { rank: 2, amount: 1000 },
