@@ -159,6 +159,7 @@ if (user.totalAmountAdded > user.wallet) {
 if (contest.spotsLeft === 0) {
    // ✅ old contest hide
   contest.isFull = true;
+  await contest.save(); // 🔥 IMPORTANT
   const newContest = new Contest({
     price: contest.price,
     totalSpots: contest.totalSpots,
