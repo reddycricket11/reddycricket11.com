@@ -129,7 +129,7 @@ module.exports.updateBalls = async function () {
                             },
                             { merge: true }
                         );
-                        {for (let a = 0; a <= 20; a++) {
+                        {/*for (let a = 0; a <= 20; a++) {
                             let overArray = '1 6 0 1 2 4'.split(' ');
                             for (let b = 0; b < 6; b++) {
                                 console.log((a - (5 - b)), 'fball number')
@@ -140,7 +140,7 @@ module.exports.updateBalls = async function () {
                                 sBalls.push({ ballNbr: parseInt(a * 6 - (5 - b)), runs: isNaN(overArray2[b]) ? 0 : parseInt(overArray2[b]), event: overArray2[b] })
                             }
 
-                        }}
+                        }*/}
                         let detail = await DetailScores.findOne({ matchId: m[i]?.matchId });
                         if (!detail) {
                             await DetailScores.create({
