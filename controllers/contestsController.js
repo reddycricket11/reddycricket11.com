@@ -19,7 +19,7 @@ router.get("/getcontests/:id", async (req, res) => {
  const contests = await Contest.find({
   matchId: req.params.id,
   isFull: { $ne: true }
-}).sort({ order: 1 });
+}).sort({ order: 1, createdAt: -1 });
 
   res.status(200).json({
     contests,
