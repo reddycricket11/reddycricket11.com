@@ -38,7 +38,7 @@ initializeApp({
 
 const db = getFirestore();
 const messaging = getMessaging();
-// Add a new document with a generated id.
+ Add a new document with a generated id.
 module.exports.addLivecommentary = async function addcommentry() {
   try {
     let date = new Date();
@@ -72,17 +72,17 @@ module.exports.addLivecommentary = async function addcommentry() {
         };
         try {
           const washingtonRef = doc(db, "cities", matchess[i].matchId);
-         // const response = await axios.request(options);
+         const response = await axios.request(options);
           const docRef = doc(db, "cities", matchess[i].matchId);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
           } else {
-            // docSnap.data() will be undefined in this case
+             docSnap.data() will be undefined in this case
             console.log("No such document!");
           }
-         // const a = response.data.commentaryList[0];
-         /* if (docSnap?.data()?.capital) {
+          const a = response.data.commentaryList[0];
+          if (docSnap?.data()?.capital) {
             await setDoc(washingtonRef, {
               capital: [...docSnap.data().capital, a],
             });
@@ -90,7 +90,7 @@ module.exports.addLivecommentary = async function addcommentry() {
             await setDoc(washingtonRef, {
               capital: [a],
             });
-          } */
+          } 
         } catch (error) {
           console.error(error);
         }
