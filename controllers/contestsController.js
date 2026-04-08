@@ -136,74 +136,77 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
 router.get("/joincontest/:id", async (req, res) => {
   const contest = await Contest.findOne({ _id: req.params.id });
   console.log(req.params.id, req.query, "quio");
+
   const user = await User.findOne({ _id: req.body.uidfromtoken });
   await user.save();
+
   const match = await Match.findOne({ matchId: contest.matchId });
-  const date = new Date();
+
+  // ❌ match started
   if (match.status !== "upcoming" && match.status !== "delayed") {
-  return res.status(400).json({
-    message: "Match already started",
-    success: false
-  });
-}
-
-    // 🔥 SAFE ENTRY FEE (main fix)
-const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
-    
-  if (user.wallet >= entryFee) {
-    user.wallet -= entryFee;
-
-// ✅ MAGIC FIX
-if (user.totalAmountAdded > user.wallet) {
-  user.totalAmountAdded = user.wallet;
-}
-      user.numberOfContestJoined = user.numberOfContestJoined + 1;
-      contest.userIds.push(req.body.uidfromtoken);
-      contest.teamsId.push(req.query.teamid);
-      contest.spotsLeft -= 1;
-    // 🔥 AUTO CREATE SAME CONTEST
-    if (contest.spotsLeft === 0) {
-   // ✅ old contest hide
-   contest.isFull = true;
-  await contest.save(); // 🔥 IMPORTANT
-  const newContest = new Contest({
-    price: contest.price,
-    totalSpots: contest.totalSpots,
-    spotsLeft: contest.totalSpots,
-    matchId: contest.matchId,
-    prizeDetails: contest.prizeDetails,
-    numWinners: contest.numWinners,
-    entryFee: contest.entryFee,
-    order: contest.order // ✅ SAME POSITION
-  });
-
-  await newContest.save();
-}
-      await Transaction.create({
-        userId: req.body.uidfromtoken,
-        amount: entryFee ,
-        action: "entry fee",
-        status: "completed",
-        transactionId: contest._id
-      });
-      await contest.save();
-      await user.save();
-      res.status(200).json({
-        contest,
-      });
- } else {
-      res.status(400).json({
-        message: "can't join contest due to insufficient balance",
-        success: false,
-      });
-    }
-  }
-  else {
-    res.status(400).json({
-      message: "can't join contest, time's up",
-      success: false,
+    return res.status(400).json({
+      message: "Match already started",
+      success: false
     });
   }
+
+  // 🔥 SAFE ENTRY FEE
+  const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
+
+  // ❌ insufficient balance
+  if (user.wallet < entryFee) {
+    return res.status(400).json({
+      message: "can't join contest due to insufficient balance",
+      success: false
+    });
+  }
+
+  // ✅ wallet deduct
+  user.wallet -= entryFee;
+
+  // ✅ MAGIC FIX
+  if (user.totalAmountAdded > user.wallet) {
+    user.totalAmountAdded = user.wallet;
+  }
+
+  user.numberOfContestJoined = user.numberOfContestJoined + 1;
+  contest.userIds.push(req.body.uidfromtoken);
+  contest.teamsId.push(req.query.teamid);
+  contest.spotsLeft -= 1;
+
+  // 🔥 AUTO CREATE SAME CONTEST
+  if (contest.spotsLeft === 0) {
+    contest.isFull = true;
+    await contest.save();
+
+    const newContest = new Contest({
+      price: contest.price,
+      totalSpots: contest.totalSpots,
+      spotsLeft: contest.totalSpots,
+      matchId: contest.matchId,
+      prizeDetails: contest.prizeDetails,
+      numWinners: contest.numWinners,
+      entryFee: contest.entryFee,
+      order: contest.order
+    });
+
+    await newContest.save();
+  }
+
+  await Transaction.create({
+    userId: req.body.uidfromtoken,
+    amount: entryFee,
+    action: "entry fee",
+    status: "completed",
+    transactionId: contest._id
+  });
+
+  await contest.save();
+  await user.save();
+
+  res.status(200).json({
+    contest,
+  });
 });
 
 router.get("/reJoinCn/:id", async (req, res) => {
