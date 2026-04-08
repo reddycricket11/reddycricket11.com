@@ -7,6 +7,28 @@ const { sendTweet, sendTweetWithImage, sendTweetWithPoll } = require("../utils/s
 const { createVsImage } = require("../utils/generateTweetImage");
 const RapidApiKey = require("../models/rapidapikeys");
 
+function getPlayingXI(team) {
+  if (!team?.players) return [];
+
+  // Playing XI ढूंढो
+  const playing = team.players.find(p =>
+    p.type && p.type.toLowerCase().includes("playing")
+  );
+
+  if (playing && playing.player?.length >= 11) {
+    return playing.player.slice(0, 11);
+  }
+
+  // fallback
+  for (let item of team.players) {
+    if (item.player?.length >= 11) {
+      return item.player.slice(0, 11);
+    }
+  }
+
+  return [];
+}
+
 const sendNotification = async (title, body, topic = "live-updates") => {
   const message = {
     notification: {
@@ -126,8 +148,16 @@ module.exports.addLiveDetails = async function () {
             }
             console.log(ratelimit, 'ratelimit', usageCount)
             console.log(data?.team1?.players?.[0].player, 'data for players')
-            players1 = data.team1.players?.[0].player || data.team1.players["Squad"]
-            players2 = data.team2.players?.[0].player || data.team2.players["Squad"]
+            let players1 = getPlayingXI(data.team1);
+             let players2 = getPlayingXI(data.team2);
+
+             if (players1.length === 0) {
+             players1 = data.team1.players?.[0]?.player || data.team1.players["Squad"] || [];
+                }
+
+            if (players2.length === 0) {
+            players2 = data.team2.players?.[0]?.player || data.team2.players["Squad"] || [];
+             } 
             captain1 = players1.find((p) => p.captain)
             captain2 = players2.find((p) => p.captain)
             const team1Players = players1.map(p => ({
