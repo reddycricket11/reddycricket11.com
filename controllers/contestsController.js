@@ -197,7 +197,7 @@ if (user.totalAmountAdded > user.wallet) {
     success: false,
   });
 }
-
+});
 router.get("/reJoinCn/:id", async (req, res) => {
   const contest = await Contest.findOne({ _id: req.params.id });
   console.log(contest, "rejoin");
