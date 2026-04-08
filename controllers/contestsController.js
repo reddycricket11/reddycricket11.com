@@ -136,6 +136,10 @@ router.get("/joincontest/:id", async (req, res) => {
   const match = await Match.findOne({ matchId: contest.matchId });
   const date = new Date();
   if (match.status === "upcoming" || match.status === "delayed") {
+
+    // 🔥 SAFE ENTRY FEE (main fix)
+const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
+    
   if (user.wallet >= contest.price) {
      
     const entryFee = contest.price;
