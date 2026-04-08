@@ -7,12 +7,12 @@ const configSchema = new mongoose.Schema(
     tier: { type: String, required: true, default: 'free' },
     totalhits: { type: Number, default: 0 },
     frequencies: {
-      t20: { type: Number, default: 0.2 },       // every 2 min
-      odi: { type: Number, default: 0.3 },       // every 5 min
+      t20: { type: Number, default: 0.3 },       // every 2 min
+      odi: { type: Number, default: 0.5 },       // every 5 min
       test: { type: Number, default: 2 },     // every 15 min
-      high: { type: Number, default: 0.2 },     // every 10 min
-      low: { type: Number, default: 0.2 },      // every 1 hour
-      very_high: { type: Number, default: 0.1 } //
+      high: { type: Number, default: 0.3 },     // every 10 min
+      low: { type: Number, default: 1 },      // every 1 hour
+      very_high: { type: Number, default: 0.2 } //
     },
   },
   { timestamps: true }
