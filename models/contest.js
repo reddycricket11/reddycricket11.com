@@ -27,6 +27,12 @@ const contestSchema = new mongoose.Schema(
       required: true,
     },
 
+    // 👇 ADD THIS
+isFull: {
+  type: Boolean,
+  default: false
+},
+
     // 👇 YAHAN ADD KAR
 order: {
   type: Number,
