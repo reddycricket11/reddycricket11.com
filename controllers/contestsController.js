@@ -19,7 +19,7 @@ router.get("/getcontests/:id", async (req, res) => {
  const contests = await Contest.find({
   matchId: req.params.id,
   isFull: { $ne: true }
-}).sort({ order: 1, createdAt: -1 })
+}).sort({ order: 1, createdAt: 1 })
 
   res.status(200).json({
     contests,
@@ -259,7 +259,7 @@ router.post("/createContestType", async (req, res) => {
         prizeDetails,
         numWinners: contestType.numWinners,
         entryFee: contestType.entryFee,
-        order: contestType.entryFee, // ✅ ADD
+        order: contest.order,
       });
 
       try {
