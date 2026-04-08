@@ -16,8 +16,8 @@ function findrank(id, arr) {
 }
 
 router.get("/getcontests/:id", async (req, res) => {
-  const contests = await Contest.find({ matchId: req.params.id })
-    .sort({ order: 1 }); // 🔥 ADD THIS
+  const contests = await Contest.find({   matchId: req.params.id,   isFull: { $ne: true } // 🔥 IMPORTANT }).sort({ order: 1 });
+
   res.status(200).json({
     contests,
   });
@@ -154,6 +154,8 @@ if (user.totalAmountAdded > user.wallet) {
       contest.spotsLeft -= 1;
     // 🔥 AUTO CREATE SAME CONTEST
 if (contest.spotsLeft === 0) {
+   // ✅ old contest hide
+  contest.isFull = true;
   const newContest = new Contest({
     price: contest.price,
     totalSpots: contest.totalSpots,
