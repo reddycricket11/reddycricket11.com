@@ -12,6 +12,9 @@ const { default: mongoose } = require("mongoose");
 const NewPayment = require("../models/newPayment");
 const Withdraw = require("../models/withdraw");
 const Transaction = require("../models/transaction");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 
 const router = express.Router();
 
@@ -246,6 +249,46 @@ router.get("/users/:userId/matches", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// ✅ ADMIN LOGIN (PHONE + PASSWORD)
+router.post("/admin-login", async (req, res) => {
+  try {
+    const { phone, password } = req.body;
+
+    const user = await User.findOne({ phone });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    // अगर password plain है (simple use के लिए)
+    if (user.password !== password) {
+      return res.status(400).json({ message: "Wrong password" });
+    }
+
+    // ✅ Admin check
+    if (user.role !== "admin") {
+      return res.status(403).json({ message: "Not admin" });
+    }
+
+    // ✅ Token (simple)
+    const token = jwt.sign(
+      { id: user._id },
+      "secret123",
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      success: true,
+      token,
+      user
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Login failed" });
   }
 });
 
