@@ -140,7 +140,7 @@ router.get("/joincontest/:id", async (req, res) => {
     // 🔥 SAFE ENTRY FEE (main fix)
 const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
     
-  if (user.wallet >= contest.price) {
+  if (user.wallet >= entryFee) {
     user.wallet -= entryFee;
 
 // ✅ MAGIC FIX
@@ -153,7 +153,7 @@ if (user.totalAmountAdded > user.wallet) {
       contest.spotsLeft -= 1;
       await Transaction.create({
         userId: req.body.uidfromtoken,
-        amount: contest.price ,
+        amount: entryFee ,
         action: "entry fee",
         status: "completed",
         transactionId: contest._id
