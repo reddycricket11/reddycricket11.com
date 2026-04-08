@@ -141,8 +141,6 @@ router.get("/joincontest/:id", async (req, res) => {
 const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
     
   if (user.wallet >= contest.price) {
-     
-    const entryFee = contest.price;
     user.wallet -= entryFee;
 
 // ✅ MAGIC FIX
