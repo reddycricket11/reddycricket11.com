@@ -47,10 +47,14 @@ module.exports.refundUnfilledContest = async () => {
   );
     continue;
   }
-// 🔒 double safety lock (DB level)
 const updated = await Contest.updateOne(
   { _id: contest._id, refunded: { $ne: true } },
-  { $set: { refunded: true } }
+  { 
+    $set: { 
+      refunded: true,
+      isCancelled: true   // 🔥 ADD THIS
+    } 
+  }
 );
 
 if (updated.modifiedCount === 0) continue;
