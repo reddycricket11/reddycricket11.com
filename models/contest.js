@@ -27,6 +27,12 @@ const contestSchema = new mongoose.Schema(
       required: true,
     },
 
+    // 👇 YAHAN ADD KAR
+order: {
+  type: Number,
+  default: 0
+},
+
     teamsId: [
       {
         type: String,
