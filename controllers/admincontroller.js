@@ -12,7 +12,7 @@ const { default: mongoose } = require("mongoose");
 const NewPayment = require("../models/newPayment");
 const Withdraw = require("../models/withdraw");
 const Transaction = require("../models/transaction");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 
