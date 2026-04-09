@@ -77,9 +77,8 @@ const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
           if (shouldGivePrize) {
   user.wallet += prize;
   user.totalAmountWon += prize;
-}     
-
-          try {
+   
+            try {
             await user.save();
 
             // 👉 transaction save
@@ -92,6 +91,8 @@ const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
             });
 
             console.log("✅ WINNING ADDED:", user._id, prize);
+
+              let distributed = false;
 
             // 👉 notification
             if (user?.fcmtoken) {
