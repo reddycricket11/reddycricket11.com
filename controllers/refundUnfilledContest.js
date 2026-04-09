@@ -17,8 +17,8 @@ module.exports.refundUnfilledContest = async () => {
       if (match.status === "delayed") continue;
 
       // ✅ toss check (IMPORTANT)
-      const tossDone = live.tossWinner && live.tossDecision;
-      if (!tossDone) continue;
+     // const tossDone = live.tossWinner && live.tossDecision;
+    //  if (!tossDone) continue;
 
       // ⏱ match start time
       const matchStart = new Date(match.date);
@@ -27,7 +27,7 @@ module.exports.refundUnfilledContest = async () => {
       const diff = (now - matchStart) / (1000 * 60);
 
       // ⏳ 5 min wait
-      if (diff < 1) continue;
+    //  if (diff < 1) continue;
 
       const contests = await Contest.find({
         matchId: match.matchId,
