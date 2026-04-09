@@ -65,9 +65,19 @@ if (contests[k].isDistributed) continue;
 
           if (!user || prize === 0) continue;
 
-          // 👉 wallet update
-          user.wallet += prize;
-          user.totalAmountWon += prize;
+          const contest = contests[k];
+const match = matches[i];
+
+const isFull = contest.isFull;
+const isCancelled = contest.isCancelled;
+const isMatchCompleted = match.result === "Complete";
+
+const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
+
+          if (shouldGivePrize) {
+  user.wallet += prize;
+  user.totalAmountWon += prize;
+}     
 
           try {
             await user.save();
