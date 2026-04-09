@@ -86,6 +86,12 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
     const teams = [];
     const contestsArray = [];
     for (let i = 0; i < contests?.length; i++) {
+      const match = await Match.findOne({ matchId: contests[i].matchId });
+      const isFull = contests[i].isFull;
+const isMatchCompleted = match.status === "completed";
+const isCancelled = contests[i].isCancelled;
+
+const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
       // ❌ cancelled contest skip
      const isCancelled = contests[i].isCancelled;
       let arr = [];
@@ -109,11 +115,14 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
         if (arr[x].userId == req.body.uidfromtoken) {
          teamsarray.push({
   ...arr[x]._doc,
-  rank: isCancelled ? "-" : x + 1,
-  won: isCancelled ? 0 : (contests[i]?.prizeDetails[x]?.prize || 0),
+ rank: shouldGivePrize ? x + 1 : "-",
+
+won: shouldGivePrize
+  ? (contests[i]?.prizeDetails[x]?.prize || 0)
+  : 0,
   username: user.username,
   teamnumber: x + 1,
-  status: isCancelled ? "Cancelled" : "Active"
+  status: isCancelled   ? "Cancelled"   : (!isFull       ? "Not Full"       : (isMatchCompleted ? "Completed" : "Live"))
 });
         }
       }
