@@ -92,8 +92,6 @@ const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
 
             console.log("✅ WINNING ADDED:", user._id, prize);
 
-              let distributed = false;
-
             // 👉 notification
             if (user?.fcmtoken) {
               const message = {
@@ -111,6 +109,7 @@ const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
           }
         }
       }
+     }
       // ✅ contest ko processed mark karo
 contests[k].isDistributed = true;
 await contests[k].save();
