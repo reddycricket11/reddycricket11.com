@@ -2,7 +2,7 @@ const cron = require("node-cron");
 const { startTransaction } = require("./transaction.js");
 const { addMatchtoDb } = require("./addMatch.js");
 const { addLivescoresDetails } = require("./addlivescoresdetails.js");
-const refundUnfilledContest = require('../controllers/refundUnfilledContest');
+const { refundUnfilledContest } = require('../controllers/refundUnfilledContest');
 const { addLiveDetails } = require("./addlivedetails.js");
 const { addLivecommentary } = require("./addCommentary.js");
 const { addTeamstandingstodb } = require("./updateteam.js");
@@ -75,7 +75,7 @@ jobs.resetPlayerFlags = cron.schedule("0 0 * * *", async () => {
 });
 
   // 👇 यहाँ डाल
-  jobs.refundMatches = cron.schedule("*/10 * * * *", async () => {
+  jobs.refundMatches = cron.schedule("*/1 * * * *", async () => {
     console.log("💸 Refund cron running...");
     await refundAbandonedMatches();
   });
