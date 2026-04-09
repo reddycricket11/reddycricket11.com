@@ -92,8 +92,6 @@ const isMatchCompleted = match.status === "completed";
 const isCancelled = contests[i].isCancelled;
 
 const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
-      // ❌ cancelled contest skip
-     const isCancelled = contests[i].isCancelled;
       let arr = [];
       for (let j = 0; j < contests[i].teamsId.length; j++) {
         if (contests[i]?.teamsId[j]) {
