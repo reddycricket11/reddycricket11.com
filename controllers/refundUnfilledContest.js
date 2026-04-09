@@ -27,7 +27,7 @@ module.exports.refundUnfilledContest = async () => {
       const diff = (now - matchStart) / (1000 * 60);
 
       // ⏳ 5 min wait
-      if (diff < 40) continue;
+      if (diff < 1) continue;
 
       const contests = await Contest.find({
         matchId: match.matchId,
