@@ -33,11 +33,27 @@ module.exports.refundUnfilledContest = async () => {
         matchId: match.matchId,
         refunded: { $ne: true }
       });
+      console.log("🔥 TOTAL CONTEST:", contests.length);
 
       for (const contest of contests) {
+        const contests = await Contest.find({
+  matchId: match.matchId,
+  refunded: { $ne: true }
+});
+
+console.log("🔥 TOTAL CONTEST:", contests.length);
+
+for (const contest of contests) {
+
+  console.log("👉 CHECK CONTEST:", contest._id);
+  console.log("SPOTS LEFT:", contest.spotsLeft);
+  console.log("USERS:", contest.userIds?.length);
+  console.log("REFUNDED:", contest.refunded);
+
+  if (contest.spotsLeft === 0 || contest.refunded) continue;
 
   // ❗ full या already refunded → skip
-  if (contest.isFull || contest.refunded) continue;
+  if (contest.spotsLeft === 0 || contest.refunded) continue;
 
   // ❗ empty contest → skip + mark refunded
   if (!contest.userIds || contest.userIds.length === 0) {
