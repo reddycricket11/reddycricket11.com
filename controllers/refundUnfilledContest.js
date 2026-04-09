@@ -27,7 +27,7 @@ module.exports.refundUnfilledContest = async () => {
       const diff = (now - matchStart) / (1000 * 60);
 
       // ⏳ 5 min wait
-    //  if (diff < 1) continue;
+      if (diff < 25) continue;
 
       const contests = await Contest.find({
         matchId: match.matchId,
@@ -41,8 +41,6 @@ for (const contest of contests) {
   console.log("SPOTS LEFT:", contest.spotsLeft);
   console.log("USERS:", contest.userIds?.length);
   console.log("REFUNDED:", contest.refunded);
-
-  if (contest.spotsLeft === 0 || contest.refunded) continue;
 
   // ❗ full या already refunded → skip
   if (contest.spotsLeft === 0 || contest.refunded) continue;
