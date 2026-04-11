@@ -88,8 +88,10 @@ router.get("/getjoinedcontest/:id", async (req, res) => {
     for (let i = 0; i < contests?.length; i++) {
       const match = await Match.findOne({ matchId: contests[i].matchId });
       const isFull = contests[i].isFull;
-const isMatchCompleted = match.status === "completed";
+const isMatchCompleted = match.result === "Complete";
 const isCancelled = contests[i].isCancelled;
+      
+       // ❗ अगर contest full नहीं है तो prizeDetails हटाओ
 
 const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
       let arr = [];
@@ -114,10 +116,13 @@ const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
          teamsarray.push({
   ...arr[x]._doc,
  rank: shouldGivePrize ? x + 1 : "-",
-
-won: shouldGivePrize
-  ? (contests[i]?.prizeDetails[x]?.prize || 0)
-  : 0,
+           won:
+    isFull === true &&
+    isMatchCompleted === true &&
+    isCancelled !== true &&
+    contests[i]?.prizeDetails?.[x]
+      ? contests[i].prizeDetails[x].prize
+      : 0,
   username: user.username,
   teamnumber: x + 1,
   status: isCancelled   ? "Cancelled"   : (!isFull       ? "Not Full"       : (isMatchCompleted ? "Completed" : "Live"))
