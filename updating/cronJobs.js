@@ -75,13 +75,13 @@ jobs.resetPlayerFlags = cron.schedule("0 0 * * *", async () => {
 });
 
   // 👇 यहाँ डाल
-  jobs.refundMatches = cron.schedule("*/1 * * * *", async () => {
+  jobs.refundMatches = cron.schedule("*/10 * * * *", async () => {
     console.log("💸 Refund cron running...");
     await refundAbandonedMatches();
   });
 
   // ✅ NEW: unfilled contest refund
-jobs.refundUnfilled = cron.schedule("*/1 * * * *", async () => {
+jobs.refundUnfilled = cron.schedule("*/10 * * * *", async () => {
   console.log("💸 Unfilled Contest Refund running...");
   await refundUnfilledContest();
 });
