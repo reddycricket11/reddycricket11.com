@@ -115,7 +115,7 @@ const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
         if (arr[x].userId == req.body.uidfromtoken) {
          teamsarray.push({
   ...arr[x]._doc,
- rank: shouldGivePrize ? x + 1 : "-",
+ rank: x + 1,
            won:
     isFull === true &&
     isMatchCompleted === true &&
