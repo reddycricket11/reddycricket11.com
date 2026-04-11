@@ -113,7 +113,7 @@ mongoose.connect(
  addLiveDetails();
 // addLivePlayers();
  addLivescoresDetails();
-refundAbandonedMatches();
+//refundAbandonedMatches();
  addMatchIds();
  addTeamstandingstodb();
  addteamPlayers();
@@ -130,7 +130,7 @@ addInPlayStatus();
  updateSeries()
  updateSquads()
 // generateShotTypes()
-refundUnfilledContest ();
+//refundUnfilledContest ();
 // fetchAndSaveTeams();
 // addMatchesForAllCurrentSeries()
 // addLiveDetailsFS()
