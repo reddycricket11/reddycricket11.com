@@ -17,20 +17,25 @@ module.exports.refundAbandonedMatches = async function () {
     const live = await MatchLive.findOne({ matchId: match.matchId });
 
     // ❌ match live नहीं हुआ OR lineup नहीं आई
-    const lineupMissing =
-      !live ||
-      !live.teamHomePlayers?.length ||
-      !live.teamAwayPlayers?.length;
+const lineupMissing =
+  !live ||
+  !live.teamHomePlayers?.length ||
+  !live.teamAwayPlayers?.length;
 
-    // ✅ match cancelled / abandoned / no result
-    const isAbandoned =
-      match.status === "cancelled" ||
-      match.status === "abandoned" ||
-      match.status === "no result";
+// ✅ match cancelled / abandoned / no result
+const isAbandoned =
+  match.status === "cancelled" ||
+  match.status === "abandoned" ||
+  match.status === "no result";
 
-    // 👉 अगर दोनों false हैं तो skip
-    if (!lineupMissing && !isAbandoned) continue;
+// ✅ NEW: match start नहीं हुआ
+const isNotStarted =
+  !live ||
+  (live.result !== "In Progress" && live.result !== "Complete");
 
+// ✅ FINAL CONDITION (नीचे होना चाहिए)
+if (!isNotStarted && !isAbandoned) continue;
+    
     // 🔁 contest ढूंढो
     const contests = await Contest.find({
       matchId: match.matchId,
@@ -38,37 +43,46 @@ module.exports.refundAbandonedMatches = async function () {
     });
 
     for (const contest of contests) {
-      // ✅ Safety: already refunded तो skip
-      if (contest.refunded) continue;
 
-      // ✅ सही entry fee (हर user का)
-      const entryFee = contest.entryFee;
+      // ❗ empty contest skip
+if (!contest.userIds || contest.userIds.length === 0) {
+  await Contest.updateOne(
+    { _id: contest._id },
+    { $set: { refunded: true, isCancelled: true } }
+  );
+  continue;
+}
 
-      for (const userId of contest.userIds) {
-        const user = await User.findById(userId);
-        if (!user) continue;
+  const updated = await Contest.updateOne(
+    { _id: contest._id, refunded: { $ne: true } },
+    { $set: { refunded: true, isCancelled: true } }
+  );
 
-        // 💸 REFUND
-        user.wallet += entryFee;
-        await user.save();
+  if (updated.modifiedCount === 0) continue;
 
-        await Transaction.create({
-          userId,
-          amount: entryFee,
-          action: "refund",
-          status: "completed",
-          transactionId: contest._id
-        });
-      }
+  const entryFee = contest.entryFee;
 
-      contest.refunded = true;
-      await contest.save();
-    }
+  for (const userId of contest.userIds) {
+    const user = await User.findById(userId);
+    if (!user) continue;
 
-    // 🧹 match को cancelled mark कर दो
-    match.status = "cancelled";
-    await match.save();
+    user.wallet += entryFee;
+    await user.save();
 
-    console.log("✅ Refund done for match:", match.matchId);
+    await Transaction.create({
+      userId,
+      amount: entryFee,
+      action: "refund",
+      status: "completed",
+      transactionId: contest._id
+    });
   }
+}
+
+// ✅ अब यहाँ (loop के बाहर)
+match.status = "cancelled";
+await match.save();
+
+console.log("✅ Refund done for match:", match.matchId);
+     } // 🔥 for (const match of matches) loop end
 };
