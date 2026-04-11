@@ -20,19 +20,15 @@ module.exports.refundUnfilledContest = async () => {
      // const tossDone = live.tossWinner && live.tossDecision;
     //  if (!tossDone) continue;
 
-      // ⏱ match start time
-      const matchStart = new Date(match.date);
-      const now = new Date();
+// ✅ ONLY when match is LIVE or COMPLETE
+if (live.result !== "In Progress" && live.result !== "Complete") {
+  continue;
+}
 
-      const diff = (now - matchStart) / (1000 * 60);
-
-      // ⏳ 5 min wait
-      if (diff < 25) continue;
-
-      const contests = await Contest.find({
-        matchId: match.matchId,
-        refunded: { $ne: true }
-      });
+const contests = await Contest.find({
+  matchId: match.matchId,
+  refunded: { $ne: true }
+});
       console.log("🔥 TOTAL CONTEST:", contests.length);
 
 for (const contest of contests) {
@@ -43,7 +39,7 @@ for (const contest of contests) {
   console.log("REFUNDED:", contest.refunded);
 
   // ❗ full या already refunded → skip
-  if (contest.spotsLeft === 0 || contest.refunded) continue;
+  if (contest.spotsLeft === 0 || contest.refunded || contest.isCancelled) continue;
 
   // ❗ empty contest → skip + mark refunded
   if (!contest.userIds || contest.userIds.length === 0) {
