@@ -174,13 +174,28 @@ userTeams.forEach(userTeam => {
 
   if (rankIndex === -1) return;
 
-  const prize = contests[i]?.prizeDetails?.[rankIndex]?.prize || 0;
+  const isFull = contests[i]?.isFull;
+const isCancelled = contests[i]?.isCancelled;
+const isMatchCompleted = matt?.result === "Complete";
+
+  if (isCancelled || !isFull) {
+  return; // ❌ skip this contest
+}
+
+const prize =
+  isFull &&
+  isMatchCompleted &&
+  !isCancelled &&
+  contests[i]?.prizeDetails?.[rankIndex]
+    ? contests[i].prizeDetails[rankIndex].prize
+    : 0;
 
   console.log("RANK:", rankIndex + 1);
   console.log("PRIZE:", prize);
 
   totalwon += prize;
 });
+}            
 mat.won = totalwon;
             }
           completedMatches.results.push(mat);
