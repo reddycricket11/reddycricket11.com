@@ -195,7 +195,7 @@ const prize =
 
   totalwon += prize;
 });
-}            
+           
 mat.won = totalwon;
             }
           completedMatches.results.push(mat);
