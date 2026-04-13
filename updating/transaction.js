@@ -75,7 +75,7 @@ const isMatchCompleted = match.result === "Complete";
 const shouldGivePrize = isFull && isMatchCompleted && !isCancelled;
 
           if (shouldGivePrize) {
- user.winnings += prize;
+user.wallet += prize;
 user.totalAmountWon += prize;
    
             try {
