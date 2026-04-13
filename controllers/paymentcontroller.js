@@ -545,7 +545,7 @@ router.get("/approveWithdraw", async (req, res) => {
     withdraw.status = "completed";
     await withdraw.save();
 
-    user.wallet -= withdraw.amount;
+    user.winnings -= withdraw.amount;
     await user.save();
 
     // 7️⃣ Update transaction record
