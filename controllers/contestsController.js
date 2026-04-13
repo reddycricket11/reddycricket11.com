@@ -151,7 +151,6 @@ router.get("/joincontest/:id", async (req, res) => {
   console.log(req.params.id, req.query, "quio");
 
   const user = await User.findOne({ _id: req.body.uidfromtoken });
-  await user.save();
 
   const match = await Match.findOne({ matchId: contest.matchId });
 
@@ -164,23 +163,53 @@ router.get("/joincontest/:id", async (req, res) => {
   }
 
   // 🔥 SAFE ENTRY FEE
+
   const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
 
-  // ❌ insufficient balance
-  if (user.wallet < entryFee) {
+// ✅ team validation
+const team = await Team.findById(req.query.teamid);
+
+if (!team) {
+  return res.status(400).json({ message: "Invalid team" });
+}
+
+if (String(team.userId) !== String(req.body.uidfromtoken)) {
+  return res.status(403).json({ message: "Not your team" });
+}
+
+// ✅ already joined check
+if (contest.userIds.includes(req.body.uidfromtoken)) {
+  return res.status(400).json({ message: "Already joined" });
+}
+// 🔥 NEW BALANCE LOGIC
+
+// ❌ insufficient balance check
+if ((user.totalAmountAdded + user.winnings) < entryFee) {
+  return res.status(400).json({
+    message: "Insufficient balance",
+    success: false
+  });
+}
+
+if (user.totalAmountAdded >= entryFee) {
+  user.totalAmountAdded -= entryFee;
+} else {
+  let remaining = entryFee - user.totalAmountAdded;
+  user.totalAmountAdded = 0;
+
+  // ✅ SAFE CHECK
+  if (user.winnings >= remaining) {
+    user.winnings -= remaining;
+  } else {
     return res.status(400).json({
-      message: "can't join contest due to insufficient balance",
+      message: "Insufficient winnings balance",
       success: false
     });
   }
+}
 
-  // ✅ wallet deduct
-  user.wallet -= entryFee;
-
-  // ✅ MAGIC FIX
-  if (user.totalAmountAdded > user.wallet) {
-    user.totalAmountAdded = user.wallet;
-  }
+// ✅ STEP 3: wallet update
+user.wallet = user.totalAmountAdded + user.winnings;
 
   user.numberOfContestJoined = user.numberOfContestJoined + 1;
   contest.userIds.push(req.body.uidfromtoken);
