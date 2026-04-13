@@ -435,11 +435,9 @@ router.get("/update_live_scoress/:matchId", async (req, res) => {
             const options = {
                 method: "GET",
       maxBodyLength: Infinity,
-      url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${matchId}/scorecard`,
+      url: `https://blazerbob.com/cricbuzz/match/${matchId}/scorecard`,
       headers: {
-        "x-apihub-key": 'Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56',
-        "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-        "x-apihub-endpoint": "5f260335-c228-4005-9eec-318200ca48d6",
+       "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
                 },
             };
 
@@ -695,11 +693,9 @@ router.get("/update_to_lives/:matchId", async (req, res) => {
                 const options = {
                     method: "GET",
       maxBodyLength: Infinity,
-      url: `https://Cricbuzz-Official-Cricket-API.proxy-production.allthingsdev.co/match/${matchId}`,
+      url: `https://blazerbob.com/cricbuzz/match/${matchId}`,
       headers: {
-        "x-apihub-key": 'Np6lN6V8wU-9Q6Gl5kIUQH2jHJf8FgiT5zExTwR3SZzOzBav56',
-        "x-apihub-host": "Cricbuzz-Official-Cricket-API.allthingsdev.co",
-        "x-apihub-endpoint": "ac951751-d311-4d23-8f18-353e75432353",
+       "x-auth-user": "e51eca4b3e7649dbbc2cb1d250d9e020",
                     },
                 };
                 const promise = new Promise((resolve, reject) => {
