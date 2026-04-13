@@ -1,3 +1,4 @@
+
 const express = require("express");
 const Matches = require("../models/match");
 const Contest = require("../models/contest");
@@ -162,33 +163,25 @@ router.get("/joincontest/:id", async (req, res) => {
     });
   }
 
-// 🔥 SAFE ENTRY FEE
-const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
+  // 🔥 SAFE ENTRY FEE
+  const entryFee = contest.entryFee || (contest.price / contest.totalSpots);
 
-// ✅ total balance check
-if ((user.wallet + user.winnings) < entryFee) {
-  return res.status(400).json({
-    message: "can't join contest due to insufficient balance",
-    success: false
-  });
-}
-
-// ✅ Dream11 logic
-if (user.wallet >= entryFee) {
-  user.wallet -= entryFee;
-} else {
-  let remaining = entryFee - user.wallet;
-  user.wallet = 0;
-
-  if (user.winnings >= remaining) {
-    user.winnings -= remaining;
-  } else {
+  // ❌ insufficient balance
+  if (user.wallet < entryFee) {
     return res.status(400).json({
-      message: "Insufficient winnings",
+      message: "can't join contest due to insufficient balance",
       success: false
     });
   }
-}
+
+  // ✅ wallet deduct
+  user.wallet -= entryFee;
+
+  // ✅ MAGIC FIX
+  if (user.totalAmountAdded > user.wallet) {
+    user.totalAmountAdded = user.wallet;
+  }
+
   user.numberOfContestJoined = user.numberOfContestJoined + 1;
   contest.userIds.push(req.body.uidfromtoken);
   contest.teamsId.push(req.query.teamid);
