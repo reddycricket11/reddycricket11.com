@@ -181,25 +181,34 @@ if (String(team.userId) !== String(req.body.uidfromtoken)) {
 if (contest.userIds.includes(req.body.uidfromtoken)) {
   return res.status(400).json({ message: "Already joined" });
 }
+  // 🔥 SAFE NUMBER FIX
+user.totalAmountWon = Number(user.totalAmountWon || 0);
+user.totalAmountAdded = Number(user.totalAmountAdded || 0);
 // 🔥 NEW BALANCE LOGIC
 
-// ❌ insufficient balance check
-if ((user.totalAmountAdded + user.winnings) < entryFee) {
+// ✅ NEW BALANCE CHECK
+
+
+  const totalBalance =
+  user.totalAmountAdded + user.totalAmountWon;
+
+if (totalBalance < entryFee) {
   return res.status(400).json({
     message: "Insufficient balance",
     success: false
   });
 }
 
-if (user.totalAmountAdded >= entryFee) {
+
+// ✅ NEW DEDUCTION LOGIC
+if (Number(user.totalAmountAdded) >= entryFee) {
   user.totalAmountAdded -= entryFee;
 } else {
   let remaining = entryFee - user.totalAmountAdded;
   user.totalAmountAdded = 0;
 
-  // ✅ SAFE CHECK
-  if (user.winnings >= remaining) {
-    user.winnings -= remaining;
+  if (Number(user.totalAmountWon) >= remaining) {
+    user.totalAmountWon -= remaining;
   } else {
     return res.status(400).json({
       message: "Insufficient winnings balance",
@@ -207,9 +216,10 @@ if (user.totalAmountAdded >= entryFee) {
     });
   }
 }
-
 // ✅ STEP 3: wallet update
-user.wallet = user.totalAmountAdded + user.winnings;
+user.wallet =
+  Number(user.totalAmountAdded || 0) +
+  Number(user.totalAmountWon || 0);
 
   user.numberOfContestJoined = user.numberOfContestJoined + 1;
   contest.userIds.push(req.body.uidfromtoken);
